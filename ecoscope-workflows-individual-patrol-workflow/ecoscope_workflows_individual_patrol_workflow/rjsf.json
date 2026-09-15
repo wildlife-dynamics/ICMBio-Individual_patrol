@@ -1,0 +1,1374 @@
+{
+  "properties": {
+    "workflow_details": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Workflow Name",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "title": "Workflow Description",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object",
+      "description": "Add information that will help to differentiate this workflow from another.",
+      "title": "Workflow Details"
+    },
+    "er_client": {
+      "additionalProperties": false,
+      "properties": {
+        "data_source": {
+          "$ref": "#/$defs/EarthRangerConnection",
+          "title": "",
+          "description": "Select one of your configured data sources."
+        }
+      },
+      "required": [
+        "data_source"
+      ],
+      "type": "object",
+      "title": "Data Source"
+    },
+    "time_range": {
+      "additionalProperties": false,
+      "properties": {
+        "since": {
+          "format": "date-time",
+          "title": "Since",
+          "type": "string",
+          "description": "The start time"
+        },
+        "until": {
+          "format": "date-time",
+          "title": "Until",
+          "type": "string",
+          "description": "The end time"
+        },
+        "timezone": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/TimezoneInfo"
+            }
+          ],
+          "default": null,
+          "title": "Timezone"
+        }
+      },
+      "required": [
+        "since",
+        "until"
+      ],
+      "type": "object",
+      "description": "Choose the period of time to analyze.",
+      "title": "Time Range"
+    },
+    "base_maps": {
+      "additionalProperties": false,
+      "properties": {
+        "base_maps": {
+          "default": [
+            {
+              "url": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+              "opacity": 1,
+              "max_zoom": 20,
+              "min_zoom": 0
+            },
+            {
+              "url": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+              "opacity": 0.5,
+              "max_zoom": 20,
+              "min_zoom": 0
+            }
+          ],
+          "items": {
+            "title": "Base Layer",
+            "anyOf": [
+              {
+                "description": "A tiled raster layer loaded on-demand from a URL template (e.g., base maps).",
+                "properties": {
+                  "url": {
+                    "default": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    "title": "Preset Layer URL",
+                    "type": "string",
+                    "const": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    "enum": [
+                      "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    ]
+                  },
+                  "opacity": {
+                    "default": 1,
+                    "description": "Set layer transparency from 1 (fully visible) to 0 (hidden).",
+                    "ecoscope:advanced": true,
+                    "maximum": 1.0,
+                    "minimum": 0.0,
+                    "title": "Layer Opacity",
+                    "type": "number"
+                  }
+                },
+                "title": "Open Street Map",
+                "type": "object"
+              },
+              {
+                "description": "A tiled raster layer loaded on-demand from a URL template (e.g., base maps).",
+                "properties": {
+                  "url": {
+                    "default": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+                    "title": "Preset Layer URL",
+                    "type": "string",
+                    "const": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+                    "enum": [
+                      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
+                    ]
+                  },
+                  "opacity": {
+                    "default": 1,
+                    "description": "Set layer transparency from 1 (fully visible) to 0 (hidden).",
+                    "ecoscope:advanced": true,
+                    "maximum": 1.0,
+                    "minimum": 0.0,
+                    "title": "Layer Opacity",
+                    "type": "number"
+                  }
+                },
+                "title": "Roadmap",
+                "type": "object"
+              },
+              {
+                "description": "A tiled raster layer loaded on-demand from a URL template (e.g., base maps).",
+                "properties": {
+                  "url": {
+                    "default": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                    "title": "Preset Layer URL",
+                    "type": "string",
+                    "const": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                    "enum": [
+                      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                    ]
+                  },
+                  "opacity": {
+                    "default": 1,
+                    "description": "Set layer transparency from 1 (fully visible) to 0 (hidden).",
+                    "ecoscope:advanced": true,
+                    "maximum": 1.0,
+                    "minimum": 0.0,
+                    "title": "Layer Opacity",
+                    "type": "number"
+                  }
+                },
+                "title": "Satellite",
+                "type": "object"
+              },
+              {
+                "description": "A tiled raster layer loaded on-demand from a URL template (e.g., base maps).",
+                "properties": {
+                  "url": {
+                    "default": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+                    "title": "Preset Layer URL",
+                    "type": "string",
+                    "const": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+                    "enum": [
+                      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
+                    ]
+                  },
+                  "opacity": {
+                    "default": 1,
+                    "description": "Set layer transparency from 1 (fully visible) to 0 (hidden).",
+                    "ecoscope:advanced": true,
+                    "maximum": 1.0,
+                    "minimum": 0.0,
+                    "title": "Layer Opacity",
+                    "type": "number"
+                  }
+                },
+                "title": "Terrain",
+                "type": "object"
+              },
+              {
+                "description": "A tiled raster layer loaded on-demand from a URL template (e.g., base maps).",
+                "properties": {
+                  "url": {
+                    "default": "https://server.arcgisonline.com/arcgis/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}",
+                    "title": "Preset Layer URL",
+                    "type": "string",
+                    "const": "https://server.arcgisonline.com/arcgis/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}",
+                    "enum": [
+                      "https://server.arcgisonline.com/arcgis/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}"
+                    ]
+                  },
+                  "opacity": {
+                    "default": 1,
+                    "description": "Set layer transparency from 1 (fully visible) to 0 (hidden).",
+                    "ecoscope:advanced": true,
+                    "maximum": 1.0,
+                    "minimum": 0.0,
+                    "title": "Layer Opacity",
+                    "type": "number"
+                  }
+                },
+                "title": "USGS Hillshade",
+                "type": "object"
+              },
+              {
+                "description": "A tiled raster layer loaded on-demand from a URL template (e.g., base maps).",
+                "properties": {
+                  "url": {
+                    "default": "https://example.tiles.com/{z}/{x}/{y}.png",
+                    "description": "The URL of a publicly accessible tiled raster service.",
+                    "pattern": "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}([-a-zA-Z0-9()@:%_\\+.~#?&//=\\{\\}]*)",
+                    "title": "Custom Layer URL",
+                    "type": "string"
+                  },
+                  "opacity": {
+                    "default": 1,
+                    "description": "Set layer transparency from 1 (fully visible) to 0 (hidden).",
+                    "ecoscope:advanced": true,
+                    "maximum": 1.0,
+                    "minimum": 0.0,
+                    "title": "Custom Layer Opacity",
+                    "type": "number"
+                  },
+                  "max_zoom": {
+                    "default": 20,
+                    "description": "Set the maximum zoom level to fetch tiles for.",
+                    "title": "Custom Layer Max Zoom",
+                    "type": "integer"
+                  },
+                  "min_zoom": {
+                    "default": 0,
+                    "description": "Set the minimum zoom level to fetch tiles for.",
+                    "title": "Custom Layer Min Zoom",
+                    "type": "integer"
+                  }
+                },
+                "title": "Custom Layer (Advanced)",
+                "type": "object"
+              }
+            ]
+          },
+          "title": " ",
+          "type": "array",
+          "description": "Select tile layers to use as base layers in map outputs. The first layer in the list will be the bottommost layer displayed.",
+          "ecoscope:advanced": true
+        }
+      },
+      "type": "object",
+      "required": [],
+      "title": "Base Maps"
+    },
+    "patrol_id": {
+      "additionalProperties": false,
+      "properties": {
+        "var": {
+          "title": "Patrol ID",
+          "type": "string",
+          "description": "The patrol to report on, matched against the patrol's serial number (the human-facing \"ID da patrulha\" shown in EarthRanger) \u2014 not its internal id. Only this one patrol is included in the report.",
+          "ecoscope:advanced": false
+        }
+      },
+      "required": [
+        "var"
+      ],
+      "type": "object",
+      "title": "Patrol ID"
+    },
+    "Patrol Lookup": {
+      "type": "object",
+      "description": "Fetch every patrol in the time range, then keep only the one matching Patrol ID.",
+      "ecoscope:task_group": true,
+      "properties": {
+        "patrol_and_events_params": {
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "default": [
+                "done"
+              ],
+              "items": {
+                "type": "string",
+                "oneOf": [
+                  {
+                    "const": "active",
+                    "title": "Active"
+                  },
+                  {
+                    "const": "overdue",
+                    "title": "Overdue"
+                  },
+                  {
+                    "const": "done",
+                    "title": "Done"
+                  },
+                  {
+                    "const": "cancelled",
+                    "title": "Cancelled"
+                  }
+                ]
+              },
+              "title": "Patrol Status",
+              "type": "array",
+              "description": "Choose to analyze patrols with a certain status. If left empty, patrols of all status will be analyzed",
+              "uniqueItems": true,
+              "ecoscope:advanced": true
+            },
+            "event_states": {
+              "default": null,
+              "items": {
+                "type": "string",
+                "oneOf": [
+                  {
+                    "const": "new",
+                    "title": "New"
+                  },
+                  {
+                    "const": "active",
+                    "title": "Active"
+                  },
+                  {
+                    "const": "resolved",
+                    "title": "Resolved"
+                  },
+                  {
+                    "const": "review",
+                    "title": "Review"
+                  }
+                ]
+              },
+              "title": "Event State",
+              "type": "array",
+              "description": "Choose to analyze events with a certain state. If left empty, events of all states will be analyzed",
+              "uniqueItems": true,
+              "ecoscope:advanced": true
+            },
+            "patrols_overlap_daterange": {
+              "default": true,
+              "title": "Patrols Overlap Daterange",
+              "type": "boolean",
+              "description": "Whether or not to include patrols that start or end outside of the time range",
+              "ecoscope:advanced": true
+            }
+          },
+          "required": [],
+          "type": "object",
+          "title": ""
+        }
+      }
+    },
+    "Patrol Track": {
+      "type": "object",
+      "description": "",
+      "ecoscope:task_group": true,
+      "properties": {
+        "trajs": {
+          "additionalProperties": false,
+          "properties": {
+            "trajectory_segment_filter": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/TrajectorySegmentFilter"
+                }
+              ],
+              "default": {
+                "min_length_meters": 0.001,
+                "max_length_meters": 100000,
+                "min_time_secs": 1,
+                "max_time_secs": 172800,
+                "min_speed_kmhr": 0.01,
+                "max_speed_kmhr": 500
+              },
+              "title": " ",
+              "description": "Filter track data by setting limits on track segment length, duration, and speed. Segments outside these bounds are removed, reducing noise and to focus on meaningful movement patterns.",
+              "ecoscope:advanced": true
+            }
+          },
+          "required": [],
+          "type": "object",
+          "title": ""
+        }
+      }
+    },
+    "Spatial Features": {
+      "type": "object",
+      "description": "Optionally overlay any EarthRanger spatial feature layer on the patrol map.",
+      "ecoscope:task_group": true,
+      "properties": {
+        "spatial_features": {
+          "additionalProperties": false,
+          "properties": {
+            "source": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/EarthRangerSource"
+                }
+              ],
+              "default": null,
+              "title": "Source"
+            },
+            "group_by": {
+              "default": "type_name",
+              "title": "Group By",
+              "type": "string",
+              "description": "Column used to group features in the map legend e.g. 'Feature Type' shows one legend entry per feature type.",
+              "oneOf": [
+                {
+                  "const": "type_name",
+                  "title": "Feature Type"
+                },
+                {
+                  "const": "title",
+                  "title": "Feature Name"
+                }
+              ],
+              "ecoscope:advanced": true
+            },
+            "legend_title": {
+              "default": "",
+              "title": "Legend Title",
+              "type": "string",
+              "description": "Label shown in the map legend e.g. 'Park Boundary'.",
+              "ecoscope:advanced": true
+            }
+          },
+          "required": [],
+          "type": "object",
+          "title": ""
+        }
+      }
+    },
+    "Local Spatial Features": {
+      "type": "object",
+      "description": "Optionally overlay a locally-uploaded spatial file on the patrol map.",
+      "ecoscope:task_group": true,
+      "properties": {
+        "local_spatial_file": {
+          "additionalProperties": false,
+          "properties": {
+            "file_path": {
+              "default": "",
+              "title": "File Path",
+              "type": "string",
+              "description": "Path to the geospatial file. Supported formats: GeoJSON (.geojson), GeoPackage (.gpkg), and GeoParquet (.parquet / .geoparquet).",
+              "ecoscope:advanced": true
+            },
+            "layer": {
+              "default": null,
+              "title": "Layer",
+              "type": "string",
+              "description": "Layer name within a GeoPackage file. Only required when the file contains multiple layers.",
+              "ecoscope:advanced": true
+            },
+            "group_by": {
+              "default": "",
+              "title": "Group By",
+              "type": "string",
+              "description": "Column used to group features in the map legend e.g. 'name', 'category'.",
+              "ecoscope:advanced": true
+            },
+            "legend_title": {
+              "default": "",
+              "title": "Legend Title",
+              "type": "string",
+              "description": "Label shown in the map legend e.g. 'Park Boundary'.",
+              "ecoscope:advanced": true
+            },
+            "style": {
+              "default": null,
+              "items": {
+                "$ref": "#/$defs/LayerStyle"
+              },
+              "maxLength": 1,
+              "title": "Style",
+              "type": "array",
+              "description": "Optional: Customise how features are rendered on the map.",
+              "ecoscope:advanced": true
+            }
+          },
+          "type": "object",
+          "required": [],
+          "title": ""
+        }
+      }
+    },
+    "Patrol Track Style": {
+      "type": "object",
+      "description": "A single fixed color for the one patrol track \u2014 no legend needed (PRD only asks for an event-type legend).",
+      "ecoscope:task_group": true,
+      "properties": {
+        "trajs_layer": {
+          "additionalProperties": false,
+          "properties": {
+            "tooltip_columns": {
+              "default": null,
+              "items": {
+                "type": "string"
+              },
+              "title": "Tooltip Columns",
+              "type": "array",
+              "description": "Restrict the on-hover tooltip to these column names. None (default) shows all properties.",
+              "ecoscope:advanced": true
+            }
+          },
+          "type": "object",
+          "required": [],
+          "title": ""
+        }
+      }
+    },
+    "Event Style": {
+      "type": "object",
+      "description": "",
+      "ecoscope:task_group": true,
+      "properties": {
+        "event_details_lookup": {
+          "additionalProperties": false,
+          "properties": {
+            "event_states": {
+              "default": null,
+              "items": {
+                "type": "string",
+                "oneOf": [
+                  {
+                    "const": "new",
+                    "title": "New"
+                  },
+                  {
+                    "const": "active",
+                    "title": "Active"
+                  },
+                  {
+                    "const": "resolved",
+                    "title": "Resolved"
+                  },
+                  {
+                    "const": "review",
+                    "title": "Review"
+                  }
+                ]
+              },
+              "title": "Event State",
+              "type": "array",
+              "description": "Choose to analyze events with a certain state. If left empty, events of all states will be analyzed",
+              "uniqueItems": true,
+              "ecoscope:advanced": true
+            },
+            "force_point_geometry": {
+              "default": true,
+              "title": "Force Point Geometry",
+              "type": "boolean",
+              "description": "If True, polygon/multipolygon event geometries are reduced to their centroid. Set False to preserve native geometry types.",
+              "ecoscope:advanced": true
+            }
+          },
+          "required": [],
+          "type": "object",
+          "title": ""
+        },
+        "event_colormap": {
+          "additionalProperties": false,
+          "properties": {
+            "input_column_name": {
+              "title": "Groupby",
+              "type": "string",
+              "description": "Color events by the selected attribute. Each unique value is assigned a distinct color on the map.",
+              "default": "event_type_display",
+              "ecoscope:advanced": false,
+              "oneOf": [
+                {
+                  "const": "event_type_display",
+                  "title": "Event Type"
+                },
+                {
+                  "const": "event_category",
+                  "title": "Event Category"
+                },
+                {
+                  "const": "serial_number",
+                  "title": "Event ID"
+                }
+              ]
+            },
+            "colormap": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/QualitativeColormap"
+                }
+              ],
+              "default": "Set2",
+              "title": "Palette",
+              "description": "Choose a color palette. For low-cardinality data (e.g. event type) any palette works; for high-cardinality data (e.g. IDs) use tab20, tab20b, or tab20c to reduce color repetition.",
+              "ecoscope:advanced": false
+            },
+            "custom_colors": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Custom Colors",
+              "type": "array",
+              "description": "Leave empty to use the palette above. When provided, these colors are applied instead.",
+              "ecoscope:advanced": false
+            }
+          },
+          "required": [
+            "input_column_name"
+          ],
+          "type": "object",
+          "title": ""
+        },
+        "event_legend_title": {
+          "additionalProperties": false,
+          "properties": {
+            "var": {
+              "title": "Title",
+              "type": "string",
+              "description": "Legend title for events.",
+              "default": "Tipo de evento",
+              "ecoscope:advanced": false
+            }
+          },
+          "required": [
+            "var"
+          ],
+          "type": "object",
+          "title": ""
+        },
+        "event_layer": {
+          "additionalProperties": false,
+          "properties": {
+            "layer_style": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/ScatterplotLayerStyle"
+                }
+              ],
+              "default": {
+                "auto_highlight": false,
+                "opacity": 1,
+                "pickable": true,
+                "get_position": "geometry.coordinates",
+                "get_fill_color": null,
+                "get_line_color": null,
+                "get_radius": 5,
+                "get_line_width": 1,
+                "get_elevation": null,
+                "radius_units": "pixels",
+                "radius_scale": 1,
+                "radius_min_pixels": 0,
+                "radius_max_pixels": null,
+                "line_width_units": "pixels",
+                "line_width_scale": 1,
+                "line_width_min_pixels": 0,
+                "line_width_max_pixels": null,
+                "stroked": false,
+                "filled": true,
+                "elevation_scale": 1,
+                "billboard": false
+              },
+              "title": "Layer Style",
+              "description": "Style arguments for the layer.",
+              "ecoscope:advanced": true,
+              "properties": {
+                "get_fill_color": {
+                  "enum": [
+                    "column_color"
+                  ]
+                },
+                "get_line_color": {
+                  "enum": [
+                    "column_color"
+                  ]
+                }
+              }
+            },
+            "tooltip_columns": {
+              "default": [
+                "id",
+                "serial_number",
+                "event_type_display",
+                "time"
+              ],
+              "items": {
+                "type": "string"
+              },
+              "title": "Tooltip Columns",
+              "type": "array",
+              "description": "Restrict the on-hover tooltip to these column names. None (default) shows all properties.",
+              "ecoscope:advanced": true
+            }
+          },
+          "type": "object",
+          "required": [],
+          "title": ""
+        }
+      }
+    },
+    "download_attachments": {
+      "additionalProperties": false,
+      "properties": {
+        "attachments_subdir": {
+          "default": "attachments",
+          "title": "Attachments Subdirectory",
+          "type": "string",
+          "description": "Subdirectory inside the output directory to store attachments.",
+          "ecoscope:advanced": true
+        },
+        "skip_download": {
+          "default": false,
+          "title": "Skip Photo Attachments",
+          "type": "boolean",
+          "description": "If True, skip downloading event photos, and the report will not include any images.",
+          "ecoscope:advanced": false
+        }
+      },
+      "required": [],
+      "type": "object",
+      "title": "Download Event Attachments"
+    },
+    "Patrol Report": {
+      "type": "object",
+      "description": "",
+      "ecoscope:task_group": true,
+      "properties": {
+        "report_template_path": {
+          "additionalProperties": false,
+          "properties": {
+            "var": {
+              "title": "Template Path",
+              "type": "string",
+              "description": "Path or URL to the .docx Jinja2 template used for the Relat\u00f3rio Patrulha report.",
+              "default": "https://raw.githubusercontent.com/wildlife-dynamics/ICMBio-Individual_patrol/main/resources/templates/relatorio_individual_patrulha_template.docx",
+              "ecoscope:advanced": false
+            }
+          },
+          "required": [
+            "var"
+          ],
+          "type": "object",
+          "title": ""
+        }
+      }
+    }
+  },
+  "$defs": {
+    "EarthRangerConnection": {
+      "properties": {
+        "name": {
+          "title": "Data Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "EarthRangerConnection",
+      "type": "object"
+    },
+    "TimezoneInfo": {
+      "properties": {
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "tzCode": {
+          "title": "Tzcode",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "utc": {
+          "title": "Utc",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "tzCode",
+        "name",
+        "utc"
+      ],
+      "title": "TimezoneInfo",
+      "type": "object"
+    },
+    "TrajectorySegmentFilter": {
+      "properties": {
+        "min_length_meters": {
+          "default": 0.001,
+          "ecoscope:advanced": true,
+          "minimum": 0.001,
+          "title": "Minimum Segment Length (Meters)",
+          "type": "number"
+        },
+        "max_length_meters": {
+          "default": 100000,
+          "ecoscope:advanced": true,
+          "exclusiveMinimum": 0.001,
+          "title": "Maximum Segment Length (Meters)",
+          "type": "number"
+        },
+        "min_time_secs": {
+          "default": 1,
+          "ecoscope:advanced": true,
+          "minimum": 1,
+          "title": "Minimum Segment Duration (Seconds)",
+          "type": "number"
+        },
+        "max_time_secs": {
+          "default": 172800,
+          "ecoscope:advanced": true,
+          "exclusiveMinimum": 1,
+          "title": "Maximum Segment Duration (Seconds)",
+          "type": "number"
+        },
+        "min_speed_kmhr": {
+          "default": 0.01,
+          "ecoscope:advanced": true,
+          "exclusiveMinimum": 0.001,
+          "title": "Minimum Segment Speed (Kilometers per Hour)",
+          "type": "number"
+        },
+        "max_speed_kmhr": {
+          "default": 500,
+          "ecoscope:advanced": true,
+          "exclusiveMinimum": 0.001,
+          "title": "Maximum Segment Speed (Kilometers per Hour)",
+          "type": "number"
+        }
+      },
+      "title": "TrajectorySegmentFilter",
+      "type": "object"
+    },
+    "EarthRangerSource": {
+      "title": "EarthRanger",
+      "type": "object",
+      "properties": {
+        "query": {
+          "title": "Query",
+          "default": null,
+          "anyOf": [
+            {
+              "type": "null",
+              "title": "--- select ---"
+            },
+            {
+              "$ref": "#/$defs/FeatureSetQuery"
+            },
+            {
+              "$ref": "#/$defs/FeatureTypeQuery"
+            },
+            {
+              "$ref": "#/$defs/FeatureIdQuery"
+            }
+          ]
+        }
+      }
+    },
+    "FeatureIdQuery": {
+      "description": "Load a single spatial feature by its EarthRanger UUID.",
+      "properties": {
+        "feature_id": {
+          "description": "UUID of a specific spatial feature available on EarthRanger.",
+          "title": "Feature Id",
+          "type": "string"
+        },
+        "style": {
+          "default": [],
+          "description": "Optional: Override how EarthRanger spatial features are rendered on the map. If not specified, features will use their native EarthRanger colours and styling.",
+          "items": {
+            "$ref": "#/$defs/LayerStyle"
+          },
+          "maxItems": 1,
+          "title": "Style",
+          "type": "array"
+        }
+      },
+      "required": [
+        "feature_id"
+      ],
+      "title": "Feature ID",
+      "type": "object"
+    },
+    "FeatureSetQuery": {
+      "description": "Load all features from a named EarthRanger featureset.",
+      "properties": {
+        "featureset_name": {
+          "description": "Display name of the featureset exactly as it appears in EarthRanger e.g. 'Boundaries'.",
+          "minLength": 1,
+          "title": "Featureset Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "featureset_name"
+      ],
+      "title": "Feature Set",
+      "type": "object"
+    },
+    "FeatureTypeQuery": {
+      "description": "Load all features of a given type across EarthRanger featuresets.",
+      "properties": {
+        "feature_type": {
+          "description": "Feature type name as shown in EarthRanger e.g. 'Conservancy'.",
+          "minLength": 1,
+          "title": "Feature Type",
+          "type": "string"
+        },
+        "style": {
+          "default": [],
+          "description": "Optional: Override how EarthRanger spatial features are rendered on the map. If not specified, features will use their native EarthRanger colours and styling.",
+          "items": {
+            "$ref": "#/$defs/LayerStyle"
+          },
+          "maxItems": 1,
+          "title": "Style",
+          "type": "array"
+        }
+      },
+      "required": [
+        "feature_type"
+      ],
+      "title": "Feature Type",
+      "type": "object"
+    },
+    "LayerStyle": {
+      "properties": {
+        "polygon": {
+          "default": [],
+          "description": "Polygon styling. Add one entry to override ER native colours.",
+          "items": {
+            "$ref": "#/$defs/PolygonStyle"
+          },
+          "maxItems": 1,
+          "title": "Polygon",
+          "type": "array"
+        },
+        "line": {
+          "default": [],
+          "description": "Line styling. Add one entry to override ER native colours.",
+          "items": {
+            "$ref": "#/$defs/LineStyle"
+          },
+          "maxItems": 1,
+          "title": "Line",
+          "type": "array"
+        },
+        "point": {
+          "default": [],
+          "description": "Point and icon marker styling. Add one entry to override ER native colours.",
+          "items": {
+            "$ref": "#/$defs/PointStyle"
+          },
+          "maxItems": 1,
+          "title": "Point",
+          "type": "array"
+        }
+      },
+      "title": "",
+      "type": "object"
+    },
+    "LineStyle": {
+      "properties": {
+        "color": {
+          "default": [],
+          "description": "Line hex colour(s) e.g. ['#E63946']. Cycles across rows.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Color",
+          "type": "array"
+        },
+        "opacity": {
+          "default": 1.0,
+          "description": "Line opacity 0\u20131.",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Opacity",
+          "type": "number"
+        },
+        "width": {
+          "default": 2.0,
+          "description": "Line width in pixels.",
+          "title": "Width",
+          "type": "number"
+        }
+      },
+      "title": "",
+      "type": "object"
+    },
+    "PointStyle": {
+      "properties": {
+        "color": {
+          "default": [],
+          "description": "Fill hex colour(s). For SVG icons this tints the marker. Cycles across rows.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Color",
+          "type": "array"
+        },
+        "size": {
+          "default": null,
+          "description": "Point radius / icon size in pixels. Leave empty to use the size set in EarthRanger.",
+          "title": "Size",
+          "type": "number"
+        }
+      },
+      "title": "",
+      "type": "object"
+    },
+    "PolygonStyle": {
+      "properties": {
+        "fill_color": {
+          "default": [],
+          "description": "Fill hex colour(s) e.g. ['#FFA500']. Cycles across rows.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Fill Color",
+          "type": "array"
+        },
+        "stroke_color": {
+          "default": null,
+          "description": "Border hex colour.",
+          "title": "Stroke Color",
+          "type": "string"
+        },
+        "fill_opacity": {
+          "default": 1.0,
+          "description": "Fill opacity 0\u20131.",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Fill Opacity",
+          "type": "number"
+        },
+        "stroke_width": {
+          "default": 2.0,
+          "description": "Border width in pixels.",
+          "title": "Stroke Width",
+          "type": "number"
+        }
+      },
+      "title": "",
+      "type": "object"
+    },
+    "QualitativeColormap": {
+      "description": "Matplotlib qualitative palettes \u2014 designed for unordered categorical data.",
+      "enum": [
+        "Pastel1",
+        "Pastel2",
+        "Paired",
+        "Accent",
+        "Dark2",
+        "Set1",
+        "Set2",
+        "Set3",
+        "tab10",
+        "tab20",
+        "tab20b",
+        "tab20c"
+      ],
+      "title": "QualitativeColormap",
+      "type": "string"
+    },
+    "ScatterplotLayerStyle": {
+      "description": "Scatterplot Layer style kwargs\nSee https://deck.gl/docs/api-reference/layers/scatterplot-layer for more info",
+      "properties": {
+        "auto_highlight": {
+          "default": false,
+          "ecoscope:advanced": true,
+          "title": "Auto Highlight",
+          "type": "boolean"
+        },
+        "opacity": {
+          "default": 1,
+          "ecoscope:advanced": true,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Opacity",
+          "type": "number"
+        },
+        "pickable": {
+          "default": true,
+          "ecoscope:advanced": true,
+          "title": "Pickable",
+          "type": "boolean"
+        },
+        "get_position": {
+          "default": "geometry.coordinates",
+          "ecoscope:advanced": true,
+          "title": "Get Position",
+          "type": "string"
+        },
+        "get_fill_color": {
+          "default": null,
+          "ecoscope:advanced": true,
+          "title": "Get Fill Color",
+          "type": "string"
+        },
+        "get_line_color": {
+          "default": null,
+          "ecoscope:advanced": true,
+          "title": "Get Line Color",
+          "type": "string"
+        },
+        "get_radius": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "default": 5,
+          "ecoscope:advanced": true,
+          "title": "Get Radius"
+        },
+        "get_line_width": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "default": 1,
+          "ecoscope:advanced": true,
+          "title": "Get Line Width"
+        },
+        "get_elevation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "default": null,
+          "ecoscope:advanced": true,
+          "title": "Get Elevation"
+        },
+        "radius_units": {
+          "default": "pixels",
+          "ecoscope:advanced": true,
+          "enum": [
+            "meters",
+            "pixels"
+          ],
+          "title": "Radius Units",
+          "type": "string"
+        },
+        "radius_scale": {
+          "default": 1,
+          "ecoscope:advanced": true,
+          "title": "Radius Scale",
+          "type": "number"
+        },
+        "radius_min_pixels": {
+          "default": 0,
+          "ecoscope:advanced": true,
+          "title": "Radius Min Pixels",
+          "type": "number"
+        },
+        "radius_max_pixels": {
+          "default": null,
+          "ecoscope:advanced": true,
+          "title": "Radius Max Pixels",
+          "type": "number"
+        },
+        "line_width_units": {
+          "default": "pixels",
+          "ecoscope:advanced": true,
+          "enum": [
+            "meters",
+            "pixels"
+          ],
+          "title": "Line Width Units",
+          "type": "string"
+        },
+        "line_width_scale": {
+          "default": 1,
+          "ecoscope:advanced": true,
+          "title": "Line Width Scale",
+          "type": "number"
+        },
+        "line_width_min_pixels": {
+          "default": 0,
+          "ecoscope:advanced": true,
+          "title": "Line Width Min Pixels",
+          "type": "number"
+        },
+        "line_width_max_pixels": {
+          "default": null,
+          "ecoscope:advanced": true,
+          "title": "Line Width Max Pixels",
+          "type": "number"
+        },
+        "stroked": {
+          "default": false,
+          "ecoscope:advanced": true,
+          "title": "Stroked",
+          "type": "boolean"
+        },
+        "filled": {
+          "default": true,
+          "ecoscope:advanced": true,
+          "title": "Filled",
+          "type": "boolean"
+        },
+        "elevation_scale": {
+          "default": 1,
+          "ecoscope:advanced": true,
+          "title": "Elevation Scale",
+          "type": "number"
+        },
+        "billboard": {
+          "default": false,
+          "ecoscope:advanced": true,
+          "title": "Billboard",
+          "type": "boolean"
+        }
+      },
+      "title": "ScatterplotLayerStyle",
+      "type": "object"
+    }
+  },
+  "uiSchema": {
+    "workflow_details": {
+      "ui:order": [
+        "name",
+        "description"
+      ]
+    },
+    "time_range": {
+      "ui:order": [
+        "since",
+        "until",
+        "timezone"
+      ]
+    },
+    "Patrol Lookup": {
+      "patrol_and_events_params": {
+        "ui:order": [
+          "status",
+          "event_states",
+          "patrols_overlap_daterange"
+        ]
+      }
+    },
+    "Spatial Features": {
+      "spatial_features": {
+        "ui:order": [
+          "source",
+          "group_by",
+          "legend_title"
+        ],
+        "source": {
+          "ui:options": {
+            "label": false
+          },
+          "query": {
+            "ui:options": {
+              "label": false
+            },
+            "anyOf": [
+              {
+                "ui:options": {
+                  "label": false
+                }
+              },
+              {
+                "ui:options": {
+                  "label": false
+                }
+              },
+              {
+                "ui:options": {
+                  "label": false
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "Local Spatial Features": {
+      "local_spatial_file": {
+        "ui:order": [
+          "file_path",
+          "layer",
+          "group_by",
+          "legend_title",
+          "style"
+        ]
+      }
+    },
+    "Event Style": {
+      "ui:order": [
+        "event_details_lookup",
+        "event_colormap",
+        "event_legend_title",
+        "event_layer"
+      ],
+      "event_details_lookup": {
+        "ui:order": [
+          "event_states",
+          "force_point_geometry"
+        ]
+      },
+      "event_colormap": {
+        "ui:order": [
+          "input_column_name",
+          "colormap",
+          "custom_colors"
+        ]
+      },
+      "event_layer": {
+        "ui:order": [
+          "layer_style",
+          "tooltip_columns"
+        ],
+        "layer_style": {
+          "get_fill_color": {
+            "ui:widget": "hidden"
+          },
+          "get_line_color": {
+            "ui:widget": "hidden"
+          },
+          "get_position": {
+            "ui:widget": "hidden"
+          }
+        }
+      }
+    },
+    "download_attachments": {
+      "ui:order": [
+        "attachments_subdir",
+        "skip_download"
+      ]
+    },
+    "ui:order": [
+      "workflow_details",
+      "er_client",
+      "time_range",
+      "base_maps",
+      "patrol_id",
+      "Patrol Lookup",
+      "Patrol Track",
+      "Spatial Features",
+      "Local Spatial Features",
+      "Patrol Track Style",
+      "Event Style",
+      "download_attachments",
+      "Patrol Report"
+    ]
+  },
+  "additionalProperties": false
+}

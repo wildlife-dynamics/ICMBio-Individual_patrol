@@ -1,0 +1,14 @@
+name: Individual Patrol Report
+author:
+  name: ""
+  organization: ICMBio
+  email: ""
+description: >
+  Relatório Patrulha — a lightweight, single-patrol record: patrol metadata,
+  the patrol track with its events overlaid, an events table, and a
+  photographic-records table. Scoped to one patrol at a time by Patrol ID,
+  as a configuration of the unified ICMBio patrol reporting workflow (see
+  ICMBio-patrol_analysis) rather than a separate build.
+theory: ""
+output_comment: ""
+citation: ""

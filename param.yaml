@@ -1,0 +1,54 @@
+# Placeholder test config, pointed at the same real, verified parnaiguacu
+# EarthRanger account ICMBio-patrol_analysis already uses (204 real patrols
+# over ~12 months per that repo's own param.yaml comment). `patrol_id.var`
+# below is a placeholder — replace with one real patrol serial number from
+# this account before running (e.g. pull one from patrol_analysis's own
+# "Patrulhas incluídas" table output, or from a quick get_patrols call
+# against this account) — see this repo's README "Status" section.
+
+workflow_details:
+  name: Relatório Patrulha
+  description: ""
+
+er_client:
+  data_source:
+    name: parnaiguacu
+
+time_range:
+  since: "2025-09-01T00:00:00.000Z"
+  until: "2026-09-01T00:00:00.000Z"
+
+patrol_id:
+  # Real patrol at parnaiguacu (Fiscalização, 6 recorded events) — found via
+  # a one-off EarthRangerIO.get_patrols() probe against this account.
+  var: "262"
+
+base_maps:
+  base_maps:
+    - url: >-
+        https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}
+      opacity: 1
+    - url: >-
+        https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}
+      opacity: 0.5
+
+event_colormap:
+  input_column_name: event_type_display
+  colormap: Set2
+
+event_legend_title:
+  var: Tipo de evento
+
+event_layer:
+  layer_style:
+    get_fill_color: column_color
+    get_line_color: column_color
+
+download_attachments:
+  skip_download: true
+
+# docxtpl template built from the partner's real mockup by
+# scripts/build_relatorio_individual_patrulha_template.py — see that
+# script and resources/templates/README.md.
+report_template_path:
+  var: "file:///Users/zak/Documents/w-dynamics/ICMBio-Individual_patrol/resources/templates/relatorio_individual_patrulha_template.docx"
