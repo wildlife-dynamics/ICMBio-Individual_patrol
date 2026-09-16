@@ -1,0 +1,35 @@
+iguacu-individual-patrol:
+  name: Iguaçu Relatório Patrulha
+  description: Individual patrol report for one patrol at Parque Nacional do Iguaçu.
+  params:
+    workflow_details:
+      name: Relatório Patrulha
+      description: ""
+    er_client:
+      data_source:
+        name: parnaiguacu
+    time_range:
+      since: "2026-08-01T00:00:00.000Z"
+      until: "2026-09-01T00:00:00.000Z"
+    patrol_id:
+      var: "262"
+    base_maps:
+      base_maps:
+        - url: >-
+            https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}
+          opacity: 1
+        - url: >-
+            https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}
+          opacity: 0.5
+    patrol_colormap:
+      input_column_name: extra__patrol_type__display
+      colormap: Set2
+    trajs_legend_title:
+      var: Tipo de patrulha
+    event_colormap:
+      input_column_name: event_type_display
+      colormap: Set2
+    event_legend_title:
+      var: Tipo de evento
+    report_template_path:
+      var: "file:///workspace/resources/templates/relatorio_individual_patrulha_template.docx"
