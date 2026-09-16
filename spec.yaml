@@ -36,6 +36,104 @@ rjsf-overrides:
       internal id. Only this one patrol is included in the report.
     patrol_id.properties.var.ecoscope:advanced: false
 
+    Patrol Style.properties.trajs_legend_title.properties.var.title: Title
+    Patrol Style.properties.trajs_legend_title.properties.var.description: Legend title for the patrol track.
+    Patrol Style.properties.trajs_legend_title.properties.var.default: Tipo de patrulha
+    Patrol Style.properties.trajs_legend_title.properties.var.ecoscope:advanced: false
+
+    Patrol Style.properties.patrol_colormap.properties.input_column_name.title: Groupby
+    Patrol Style.properties.patrol_colormap.properties.input_column_name.description: Color the patrol track by the selected attribute.
+    Patrol Style.properties.patrol_colormap.properties.input_column_name.default: extra__patrol_type__display
+    Patrol Style.properties.patrol_colormap.properties.input_column_name.ecoscope:advanced: false
+    Patrol Style.properties.patrol_colormap.properties.input_column_name.oneOf:
+      - const: extra__patrol_type__display
+        title: Patrol Type
+      - const: extra__patrol_serial_number
+        title: Patrol ID
+    Patrol Style.properties.patrol_colormap.properties.colormap.title: Palette
+    Patrol Style.properties.patrol_colormap.properties.colormap.description: Choose a color palette (only one color is actually used, since there's a single patrol) — or set Custom Colors below to pick an exact color instead.
+    Patrol Style.properties.patrol_colormap.properties.colormap.default: "Set2"
+    Patrol Style.properties.patrol_colormap.properties.colormap.ecoscope:advanced: false
+    Patrol Style.properties.patrol_colormap.properties.custom_colors.title: Custom Colors
+    Patrol Style.properties.patrol_colormap.properties.custom_colors.description: "Leave empty to use the palette above. Provide one RGBA color (e.g. [37, 99, 235, 255]) to set the track's exact color instead."
+    Patrol Style.properties.patrol_colormap.properties.custom_colors.ecoscope:advanced: false
+
+    Patrol Style.properties.trajs_layer.properties.layer_style.description: ""
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.auto_highlight.type: boolean
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.auto_highlight.default: false
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.auto_highlight.title: Auto Highlight
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.auto_highlight.description: Enable automatic highlighting when hovering over the patrol track.
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.auto_highlight.ecoscope:advanced: true
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.opacity.type: number
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.opacity.default: 1.0
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.opacity.title: Opacity
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.opacity.description: Transparency of the patrol track, from 0 (invisible) to 1 (fully opaque).
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.opacity.ecoscope:advanced: true
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.pickable.type: boolean
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.pickable.default: true
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.pickable.title: Pickable
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.pickable.description: Allow the patrol track to be interactive (hoverable and clickable).
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.pickable.ecoscope:advanced: true
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.get_path.type: string
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.get_path.default: geometry.coordinates
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.get_path.enum: [geometry.coordinates]
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.get_path.title: Path
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.get_path.description: Column or expression used to determine the path coordinates.
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.get_path.ecoscope:advanced: true
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.get_color.type: string
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.get_color.default: column_color
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.get_color.enum: [column_color]
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.get_color.title: Color
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.get_color.description: Column used for track color. Defaults to the colormap output.
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.get_color.ecoscope:advanced: true
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.get_width.anyOf:
+      - type: number
+        default: 4
+        title: Line Width Size
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.get_width.default: 4
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.get_width.title: Line Width
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.get_width.description: Width of the patrol track line.
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.get_width.ecoscope:advanced: true
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_scale.type: number
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_scale.default: 1
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_scale.title: Width Scale
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_scale.description: Global multiplier applied to the track width.
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_scale.ecoscope:advanced: true
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_min_pixels.type: number
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_min_pixels.default: 0
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_min_pixels.title: Width Min Pixels
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_min_pixels.description: Minimum track width in pixels regardless of zoom level.
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_min_pixels.ecoscope:advanced: true
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_max_pixels.type: number
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_max_pixels.default: 9999
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_max_pixels.title: Width Max Pixels
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_max_pixels.description: Maximum track width in pixels regardless of zoom level.
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_max_pixels.ecoscope:advanced: true
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_units.type: string
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_units.default: pixels
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_units.enum: [meters, pixels]
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_units.title: Width Units
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_units.description: Units for the track width — pixels (screen-space) or meters (world-space).
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.width_units.ecoscope:advanced: true
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.cap_rounded.type: boolean
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.cap_rounded.default: true
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.cap_rounded.title: Rounded Caps
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.cap_rounded.description: Draw rounded ends on each track segment.
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.cap_rounded.ecoscope:advanced: true
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.joint_rounded.type: boolean
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.joint_rounded.default: false
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.joint_rounded.title: Joint Rounded
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.joint_rounded.description: Draw rounded joins between path segments.
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.joint_rounded.ecoscope:advanced: true
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.billboard.type: boolean
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.billboard.default: false
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.billboard.title: Billboard
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.billboard.description: Render the path always facing the camera regardless of map tilt.
+    Patrol Style.properties.trajs_layer.properties.layer_style.properties.billboard.ecoscope:advanced: true
+    Patrol Style.properties.trajs_layer.properties.tooltip_columns.default:
+      - extra__patrol_serial_number
+      - column_label
+
     Event Style.properties.event_colormap.properties.input_column_name.title: Groupby
     Event Style.properties.event_colormap.properties.input_column_name.description: Color events by the selected attribute. Each unique value is assigned a distinct color on the map.
     Event Style.properties.event_colormap.properties.input_column_name.default: event_type_display
@@ -58,13 +156,140 @@ rjsf-overrides:
     Event Style.properties.event_legend_title.properties.var.description: Legend title for events.
     Event Style.properties.event_legend_title.properties.var.default: Tipo de evento
     Event Style.properties.event_legend_title.properties.var.ecoscope:advanced: false
+
+    Event Style.properties.event_layer.properties.layer_style.description: ""
+    Event Style.properties.event_layer.properties.layer_style.properties.auto_highlight.type: boolean
+    Event Style.properties.event_layer.properties.layer_style.properties.auto_highlight.default: false
+    Event Style.properties.event_layer.properties.layer_style.properties.auto_highlight.title: Auto Highlight
+    Event Style.properties.event_layer.properties.layer_style.properties.auto_highlight.description: Enable automatic highlighting when hovering over a marker.
+    Event Style.properties.event_layer.properties.layer_style.properties.auto_highlight.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.opacity.type: number
+    Event Style.properties.event_layer.properties.layer_style.properties.opacity.default: 1.0
+    Event Style.properties.event_layer.properties.layer_style.properties.opacity.title: Opacity
+    Event Style.properties.event_layer.properties.layer_style.properties.opacity.description: Transparency of the markers, from 0 (invisible) to 1 (fully opaque).
+    Event Style.properties.event_layer.properties.layer_style.properties.opacity.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.pickable.type: boolean
+    Event Style.properties.event_layer.properties.layer_style.properties.pickable.default: true
+    Event Style.properties.event_layer.properties.layer_style.properties.pickable.title: Pickable
+    Event Style.properties.event_layer.properties.layer_style.properties.pickable.description: Allow markers to be interactive (hoverable and clickable).
+    Event Style.properties.event_layer.properties.layer_style.properties.pickable.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.get_position.type: string
+    Event Style.properties.event_layer.properties.layer_style.properties.get_position.default: geometry.coordinates
+    Event Style.properties.event_layer.properties.layer_style.properties.get_position.enum: [geometry.coordinates]
+    Event Style.properties.event_layer.properties.layer_style.properties.get_position.title: Position
+    Event Style.properties.event_layer.properties.layer_style.properties.get_position.description: Column or expression used to determine the marker position on the map.
+    Event Style.properties.event_layer.properties.layer_style.properties.get_position.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.get_fill_color.type: string
+    Event Style.properties.event_layer.properties.layer_style.properties.get_fill_color.default: column_color
     Event Style.properties.event_layer.properties.layer_style.properties.get_fill_color.enum: [column_color]
+    Event Style.properties.event_layer.properties.layer_style.properties.get_fill_color.title: Fill Color
+    Event Style.properties.event_layer.properties.layer_style.properties.get_fill_color.description: Column used for marker fill color. Defaults to the colormap output.
+    Event Style.properties.event_layer.properties.layer_style.properties.get_fill_color.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.get_line_color.type: string
+    Event Style.properties.event_layer.properties.layer_style.properties.get_line_color.default: column_color
     Event Style.properties.event_layer.properties.layer_style.properties.get_line_color.enum: [column_color]
+    Event Style.properties.event_layer.properties.layer_style.properties.get_line_color.title: Outline Color
+    Event Style.properties.event_layer.properties.layer_style.properties.get_line_color.description: Column used for marker outline color. Defaults to the colormap output.
+    Event Style.properties.event_layer.properties.layer_style.properties.get_line_color.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.get_radius.anyOf:
+      - type: number
+        default: 6
+        title: Radius Size
+    Event Style.properties.event_layer.properties.layer_style.properties.get_radius.default: 6
+    Event Style.properties.event_layer.properties.layer_style.properties.get_radius.title: Point Radius
+    Event Style.properties.event_layer.properties.layer_style.properties.get_radius.description: Size of each event marker.
+    Event Style.properties.event_layer.properties.layer_style.properties.get_radius.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.get_line_width.anyOf:
+      - type: number
+        default: 1
+        title: Line Width Size
+    Event Style.properties.event_layer.properties.layer_style.properties.get_line_width.default: 1
+    Event Style.properties.event_layer.properties.layer_style.properties.get_line_width.title: Outline Width
+    Event Style.properties.event_layer.properties.layer_style.properties.get_line_width.description: Width of the marker outline when Stroked is enabled.
+    Event Style.properties.event_layer.properties.layer_style.properties.get_line_width.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.get_elevation.anyOf:
+      - type: number
+        default: 0
+        title: Elevation Height
+    Event Style.properties.event_layer.properties.layer_style.properties.get_elevation.default: 0
+    Event Style.properties.event_layer.properties.layer_style.properties.get_elevation.title: Elevation
+    Event Style.properties.event_layer.properties.layer_style.properties.get_elevation.description: Height of each marker for 3D visualisation.
+    Event Style.properties.event_layer.properties.layer_style.properties.get_elevation.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_units.type: string
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_units.default: pixels
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_units.enum: [meters, pixels]
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_units.title: Radius Units
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_units.description: Units for the marker radius — pixels (screen-space) or meters (world-space).
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_units.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_scale.type: number
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_scale.default: 1
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_scale.title: Radius Scale
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_scale.description: Global multiplier applied to all marker radii.
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_scale.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_min_pixels.type: number
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_min_pixels.default: 0
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_min_pixels.title: Radius Min Pixels
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_min_pixels.description: Minimum radius size in pixels regardless of zoom level.
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_min_pixels.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_max_pixels.type: number
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_max_pixels.default: 9999
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_max_pixels.title: Radius Max Pixels
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_max_pixels.description: Maximum radius size in pixels regardless of zoom level.
+    Event Style.properties.event_layer.properties.layer_style.properties.radius_max_pixels.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_units.type: string
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_units.default: pixels
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_units.enum: [meters, pixels]
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_units.title: Line Width Units
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_units.description: Units for the outline width — pixels (screen-space) or meters (world-space).
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_units.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_scale.type: number
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_scale.default: 1
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_scale.title: Line Width Scale
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_scale.description: Global multiplier applied to all outline widths.
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_scale.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_min_pixels.type: number
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_min_pixels.default: 0
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_min_pixels.title: Line Width Min Pixels
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_min_pixels.description: Minimum outline width in pixels regardless of zoom level.
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_min_pixels.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_max_pixels.type: number
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_max_pixels.default: 9999
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_max_pixels.title: Line Width Max Pixels
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_max_pixels.description: Maximum outline width in pixels regardless of zoom level.
+    Event Style.properties.event_layer.properties.layer_style.properties.line_width_max_pixels.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.stroked.type: boolean
+    Event Style.properties.event_layer.properties.layer_style.properties.stroked.default: false
+    Event Style.properties.event_layer.properties.layer_style.properties.stroked.title: Stroked
+    Event Style.properties.event_layer.properties.layer_style.properties.stroked.description: Draw a border outline around each marker.
+    Event Style.properties.event_layer.properties.layer_style.properties.stroked.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.filled.type: boolean
+    Event Style.properties.event_layer.properties.layer_style.properties.filled.default: true
+    Event Style.properties.event_layer.properties.layer_style.properties.filled.title: Filled
+    Event Style.properties.event_layer.properties.layer_style.properties.filled.description: Fill the interior of each marker with color.
+    Event Style.properties.event_layer.properties.layer_style.properties.filled.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.elevation_scale.type: number
+    Event Style.properties.event_layer.properties.layer_style.properties.elevation_scale.default: 1
+    Event Style.properties.event_layer.properties.layer_style.properties.elevation_scale.title: Elevation Scale
+    Event Style.properties.event_layer.properties.layer_style.properties.elevation_scale.description: Global multiplier applied to the elevation value for 3D visualisation.
+    Event Style.properties.event_layer.properties.layer_style.properties.elevation_scale.ecoscope:advanced: true
+    Event Style.properties.event_layer.properties.layer_style.properties.billboard.type: boolean
+    Event Style.properties.event_layer.properties.layer_style.properties.billboard.default: false
+    Event Style.properties.event_layer.properties.layer_style.properties.billboard.title: Billboard
+    Event Style.properties.event_layer.properties.layer_style.properties.billboard.description: Always face the marker toward the camera regardless of map tilt.
+    Event Style.properties.event_layer.properties.layer_style.properties.billboard.ecoscope:advanced: true
     Event Style.properties.event_layer.properties.tooltip_columns.default:
       - id
       - serial_number
       - event_type_display
       - time
+
+    Spatial Features.properties.spatial_features.properties.source.default:
+      query: null
+    Spatial Features.properties.spatial_features.properties.legend_title.ui:placeholder: "e.g. Park Boundary"
+    Local Spatial Features.properties.local_spatial_file.properties.file_path.title: Local File Path
+    Local Spatial Features.properties.local_spatial_file.properties.file_path.description: "GeoJSON (.geojson), GeoPackage (.gpkg), or GeoParquet (.parquet/.geoparquet)."
+    Local Spatial Features.properties.local_spatial_file.properties.layer.default: ""
+    Local Spatial Features.properties.local_spatial_file.properties.style.default: []
 
     Patrol Report.properties.report_template_path.properties.var.title: Template Path
     Patrol Report.properties.report_template_path.properties.var.description: "Path or URL to the .docx Jinja2 template used for the Relatório Patrulha report."
@@ -110,6 +335,10 @@ rjsf-overrides:
       ui:widget: hidden
     Event Style.event_layer.layer_style.get_position:
       ui:widget: hidden
+    Patrol Style.trajs_layer.layer_style.get_color:
+      ui:widget: hidden
+    Patrol Style.trajs_layer.layer_style.get_path:
+      ui:widget: hidden
 
 task-instance-defaults:
   skipif:
@@ -149,7 +378,7 @@ workflow:
 
   # The one selector that actually scopes this report — everything below
   # is fetched over Time Range, then narrowed down to just this patrol.
-  - name: Patrol ID
+  - name: Patrol
     id: patrol_id
     task: set_string_var
 
@@ -157,6 +386,11 @@ workflow:
     type: task-group
     description: "Fetch every patrol in the time range, then keep only the one matching Patrol ID."
     tasks:
+      # status/event_states/patrols_overlap_daterange are hardcoded here
+      # (not left to default/exposed) to match every other already-fixed
+      # field on this same task — same convention as ICMBio-patrol_analysis's
+      # own patrol status list. All patrol statuses are included since this
+      # is a lookup by a specific ID, not a status-filtered report.
       - id: patrol_and_events_params
         task: set_patrols_and_patrol_events_params
         partial:
@@ -164,11 +398,18 @@ workflow:
           time_range: ${{ workflow.time_range.return }}
           patrol_types: []
           event_types: []
+          status:
+            - done
+            - active
+            - overdue
+            - cancelled
+          event_states: []
           sub_page_size: 100
           raise_on_empty: false
           include_patrol_details: true
           truncate_to_time_range: true
           include_null_geometry: false
+          patrols_overlap_daterange: true
 
       - id: all_patrols
         task: get_patrols_from_combined_params
@@ -245,7 +486,7 @@ workflow:
             - time
             - patrol_start_time
 
-  - title: Patrol Track
+  - title: Patrol Trajectory
     type: task-group
     description: ""
     tasks:
@@ -279,7 +520,7 @@ workflow:
 
   - title: Patrol Stat Cards
     type: task-group
-    description: "ID da patrulha, Tipo de patrulha, Líder da patrulha, Distância percorrida, Data e hora de início/fim, Participantes."
+    description: "Scalar patrol stats — feed the docx report's stat table (ID da patrulha, Tipo de patrulha, Líder da patrulha, Data e hora de início/fim) and the distance/time numbers below."
     tasks:
       # extra__patrol_serial_number comes through as int64 — using the
       # icmbio ext's own extract_first_value_as_string (not
@@ -294,62 +535,37 @@ workflow:
           df: ${{ workflow.trajs.return }}
           column_name: extra__patrol_serial_number
 
-      - name: ID da patrulha
-        id: patrol_id_stat_widget
-        task: create_text_widget_single_view
-        skipif:
-          conditions:
-            - never
-        partial:
-          title: "ID da patrulha"
-          data: ${{ workflow.patrol_id_stat.return }}
-
       - id: patrol_type_stat
         task: ecoscope_workflows_ext_icmbio.tasks.extract_first_value_as_string
         partial:
           df: ${{ workflow.trajs.return }}
           column_name: extra__patrol_type__display
 
-      - name: Tipo de patrulha
-        id: patrol_type_stat_widget
-        task: create_text_widget_single_view
-        skipif:
-          conditions:
-            - never
-        partial:
-          title: "Tipo de patrulha"
-          data: ${{ workflow.patrol_type_stat.return }}
-
       # NOTE (known limitation, same as ICMBio-patrol_analysis): EarthRanger
       # has no separate "equipe de apoio" (support crew) list — only a
-      # single patrol leader/subject. Participantes reuses that same value
-      # rather than inventing a crew list; revisit if the partner needs a
-      # real multi-person roster.
+      # single patrol leader/subject. Participantes (docx report) reuses
+      # this same value rather than inventing a crew list.
       - id: patrol_leader_stat
         task: ecoscope_workflows_ext_icmbio.tasks.extract_first_value_as_string
         partial:
           df: ${{ workflow.trajs.return }}
           column_name: extra__patrol_subject
 
-      - name: Líder da patrulha
-        id: patrol_leader_stat_widget
-        task: create_text_widget_single_view
-        skipif:
-          conditions:
-            - never
+      - id: start_time_str
+        task: ecoscope_workflows_ext_icmbio.tasks.extract_formatted_datetime
         partial:
-          title: "Líder da patrulha"
-          data: ${{ workflow.patrol_leader_stat.return }}
+          df: ${{ workflow.trajs.return }}
+          column_name: extra__patrol_start_time
+          aggregator: min
+          time_format: "%d/%m/%Y %H:%M"
 
-      - name: Participantes
-        id: patrol_participants_widget
-        task: create_text_widget_single_view
-        skipif:
-          conditions:
-            - never
+      - id: end_time_str
+        task: ecoscope_workflows_ext_icmbio.tasks.extract_formatted_datetime
         partial:
-          title: "Participantes"
-          data: ${{ workflow.patrol_leader_stat.return }}
+          df: ${{ workflow.trajs.return }}
+          column_name: extra__patrol_end_time
+          aggregator: max
+          time_format: "%d/%m/%Y %H:%M"
 
       - id: total_distance
         task: dataframe_column_sum
@@ -364,52 +580,18 @@ workflow:
           new_unit: km
           value: ${{ workflow.total_distance.return }}
 
-      - name: Distância percorrida
-        id: total_distance_widget
-        task: create_single_value_widget_single_view
-        skipif:
-          conditions:
-            - never
-        partial:
-          title: "Distância percorrida (km)"
-          decimal_places: 2
-          data: ${{ workflow.total_distance_km.return }}
-
-      - id: start_time_str
-        task: ecoscope_workflows_ext_icmbio.tasks.extract_formatted_datetime
+      - id: total_hours
+        task: dataframe_column_sum
         partial:
           df: ${{ workflow.trajs.return }}
-          column_name: extra__patrol_start_time
-          aggregator: min
-          time_format: "%d/%m/%Y %H:%M"
+          column_name: timespan_seconds
 
-      - name: Data e hora de início
-        id: start_time_widget
-        task: create_text_widget_single_view
-        skipif:
-          conditions:
-            - never
+      - id: total_hours_h
+        task: with_unit
         partial:
-          title: "Data e hora de início"
-          data: ${{ workflow.start_time_str.return }}
-
-      - id: end_time_str
-        task: ecoscope_workflows_ext_icmbio.tasks.extract_formatted_datetime
-        partial:
-          df: ${{ workflow.trajs.return }}
-          column_name: extra__patrol_end_time
-          aggregator: max
-          time_format: "%d/%m/%Y %H:%M"
-
-      - name: Data e hora do fim
-        id: end_time_widget
-        task: create_text_widget_single_view
-        skipif:
-          conditions:
-            - never
-        partial:
-          title: "Data e hora do fim"
-          data: ${{ workflow.end_time_str.return }}
+          original_unit: s
+          new_unit: h
+          value: ${{ workflow.total_hours.return }}
 
   - title: Spatial Features
     type: task-group
@@ -453,18 +635,41 @@ workflow:
             - ${{ workflow.spatial_features_layer.return }}
             - ${{ workflow.local_spatial_features_layer.return }}
 
-  - title: Patrol Track Style
+  - title: Patrol Style
     type: task-group
-    description: "A single fixed color for the one patrol track — no legend needed (PRD only asks for an event-type legend)."
+    description: "Choose how the patrol track is colored on the map."
     tasks:
+      - id: patrol_colormap
+        task: apply_qualitative_color_map
+        partial:
+          df: ${{ workflow.trajs.return }}
+
+      - id: selected_traj_cols
+        task: map_columns
+        partial:
+          df: ${{ workflow.patrol_colormap.return }}
+          retain_columns:
+            - geometry
+            - column_color
+            - column_label
+            - extra__patrol_serial_number
+          raise_if_not_found: false
+          drop_columns: null
+          rename_columns: null
+          duplicate_strategy: suffix
+
+      - id: trajs_legend_title
+        task: set_string_var
+
       - id: trajs_layer
         task: create_path_layer
         partial:
-          geodataframe: ${{ workflow.trajs.return }}
-          legend: null
+          geodataframe: ${{ workflow.selected_traj_cols.return }}
+          legend:
+            title: ${{ workflow.trajs_legend_title.return }}
+            label_column: column_label
+            color_column: column_color
           data_url: null
-          layer_style:
-            get_color: [37, 99, 235, 255]
 
   - title: Event Style
     type: task-group
@@ -525,15 +730,27 @@ workflow:
             - id
             - event_details
 
+      # merge_two_dataframes' "drop the redundant join column" cleanup
+      # (ecoscope_workflows_ext_custom/tasks/transformation/_merge.py)
+      # assumes left_on/right_on are *different* names and drops the
+      # other side's key after merging — but with left_on==right_on="id"
+      # (same name both sides), pandas already collapses them into one
+      # 'id' column during the merge itself, and this cleanup then drops
+      # that same column anyway, thinking it's a leftover duplicate.
+      # Confirmed directly (.scripts/debug_validate_wrapper.py): 'id'
+      # survives the merge with `on: id` but vanishes entirely with
+      # left_on/right_on both set to "id". Using `on` instead of
+      # left_on/right_on avoids this shared task's bug (right_on stays
+      # None, so nothing gets dropped).
       - id: events_with_display
         task: merge_two_dataframes
         partial:
           left: ${{ workflow.events_with_type_display.return }}
           right: ${{ workflow.event_details_lookup_cols.return }}
           how: "left"
-          on: null
-          left_on: id
-          right_on: id
+          on: id
+          left_on: null
+          right_on: null
           left_index: false
           right_index: false
           fillna_value: null
@@ -568,6 +785,48 @@ workflow:
             label_column: column_label
             color_column: column_color
           data_url: null
+
+  - title: Patrol Summary Stats
+    type: task-group
+    description: "Número de eventos, Distância percorrida, Tempo total."
+    tasks:
+      - id: total_events
+        task: dataframe_count
+        partial:
+          df: ${{ workflow.event_colormap.return }}
+
+      - name: Número de eventos
+        id: total_events_widget
+        task: create_single_value_widget_single_view
+        skipif:
+          conditions:
+            - never
+        partial:
+          title: "Número de eventos"
+          decimal_places: 0
+          data: ${{ workflow.total_events.return }}
+
+      - name: Distância percorrida
+        id: total_distance_widget
+        task: create_single_value_widget_single_view
+        skipif:
+          conditions:
+            - never
+        partial:
+          title: "Distância percorrida (km)"
+          decimal_places: 2
+          data: ${{ workflow.total_distance_km.return }}
+
+      - name: Tempo total
+        id: total_hours_widget
+        task: create_single_value_widget_single_view
+        skipif:
+          conditions:
+            - never
+        partial:
+          title: "Tempo total (h)"
+          decimal_places: 2
+          data: ${{ workflow.total_hours_h.return }}
 
   - title: Patrol Map
     type: task-group
@@ -671,59 +930,6 @@ workflow:
           title: "Eventos"
           data: ${{ workflow.events_table_html.return }}
 
-  - title: Registros Fotográficos Table
-    type: task-group
-    description: "Informações (ID do evento; data e hora; coordenadas geográficas; tipo de evento) — metadata only on the dashboard; the docx report embeds the actual photos."
-    tasks:
-      - id: photo_records_renamed
-        task: map_columns
-        partial:
-          df: ${{ workflow.event_colormap.return }}
-          rename_columns:
-            serial_number: "ID do evento"
-            time: "Data e hora"
-            lat/lon: "Coordenadas geográficas"
-            event_type_display: "Tipo de evento"
-          raise_if_not_found: false
-          retain_columns: null
-          drop_columns: null
-          duplicate_strategy: suffix
-
-      - id: photo_records_cols
-        task: select_columns
-        partial:
-          df: ${{ workflow.photo_records_renamed.return }}
-          raise_on_missing: false
-          columns:
-            - "ID do evento"
-            - "Data e hora"
-            - "Coordenadas geográficas"
-            - "Tipo de evento"
-
-      - id: photo_records_table
-        task: draw_table
-        partial:
-          dataframe: ${{ workflow.photo_records_cols.return }}
-          columns: null
-          table_config: null
-
-      - id: photo_records_table_html
-        task: persist_text
-        partial:
-          text: ${{ workflow.photo_records_table.return }}
-          root_path: ${{ env.ECOSCOPE_WORKFLOWS_RESULTS }}
-          filename_suffix: photo_records_table
-
-      - name: Registros Fotográficos
-        id: photo_records_widget
-        task: create_plot_widget_single_view
-        skipif:
-          conditions:
-            - never
-        partial:
-          title: "Registros Fotográficos"
-          data: ${{ workflow.photo_records_table_html.return }}
-
   - name: Download Event Attachments
     id: download_attachments
     task: download_event_attachments
@@ -786,15 +992,10 @@ workflow:
     partial:
       details: ${{ workflow.workflow_details.return }}
       widgets:
-        - ${{ workflow.patrol_id_stat_widget.return }}
-        - ${{ workflow.patrol_type_stat_widget.return }}
-        - ${{ workflow.patrol_leader_stat_widget.return }}
-        - ${{ workflow.patrol_participants_widget.return }}
+        - ${{ workflow.total_events_widget.return }}
         - ${{ workflow.total_distance_widget.return }}
-        - ${{ workflow.start_time_widget.return }}
-        - ${{ workflow.end_time_widget.return }}
+        - ${{ workflow.total_hours_widget.return }}
         - ${{ workflow.patrol_map_widget.return }}
         - ${{ workflow.events_table_widget.return }}
-        - ${{ workflow.photo_records_widget.return }}
       groupers: ${{ workflow.groupers.return }}
       time_range: ${{ workflow.time_range.return }}

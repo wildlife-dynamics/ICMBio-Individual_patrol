@@ -1,10 +1,11 @@
-# Placeholder test config, pointed at the same real, verified parnaiguacu
-# EarthRanger account ICMBio-patrol_analysis already uses (204 real patrols
-# over ~12 months per that repo's own param.yaml comment). `patrol_id.var`
-# below is a placeholder — replace with one real patrol serial number from
-# this account before running (e.g. pull one from patrol_analysis's own
-# "Patrulhas incluídas" table output, or from a quick get_patrols call
-# against this account) — see this repo's README "Status" section.
+# Real config, verified end-to-end against the real parnaiguacu EarthRanger
+# account ICMBio-patrol_analysis also uses. patrol_id 262 is a real patrol
+# (Fiscalização, 6 recorded events, 27/08/2026) found via a one-off
+# EarthRangerIO.get_patrols() probe against this account.
+#
+# Time range: narrowed to a real 1-month window covering that patrol (was a
+# wide ~12-month placeholder while patrol 262 was still being found — same
+# narrowing ICMBio-patrol_analysis did once its own pipeline was verified).
 
 workflow_details:
   name: Relatório Patrulha
@@ -15,12 +16,10 @@ er_client:
     name: parnaiguacu
 
 time_range:
-  since: "2025-09-01T00:00:00.000Z"
+  since: "2026-08-01T00:00:00.000Z"
   until: "2026-09-01T00:00:00.000Z"
 
 patrol_id:
-  # Real patrol at parnaiguacu (Fiscalização, 6 recorded events) — found via
-  # a one-off EarthRangerIO.get_patrols() probe against this account.
   var: "262"
 
 base_maps:
@@ -31,6 +30,17 @@ base_maps:
     - url: >-
         https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}
       opacity: 0.5
+
+patrol_colormap:
+  input_column_name: extra__patrol_type__display
+  colormap: Set2
+
+trajs_legend_title:
+  var: Tipo de patrulha
+
+trajs_layer:
+  layer_style:
+    get_color: column_color
 
 event_colormap:
   input_column_name: event_type_display

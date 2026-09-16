@@ -5,6 +5,7 @@ from typing import Any
 from ecoscope.platform.tasks.analysis import (
     dataframe_column_sum as dataframe_column_sum,
 )
+from ecoscope.platform.tasks.analysis import dataframe_count as dataframe_count
 from ecoscope.platform.tasks.config import set_string_var as set_string_var
 from ecoscope.platform.tasks.config import set_workflow_details as set_workflow_details
 from ecoscope.platform.tasks.filter import (
@@ -49,9 +50,6 @@ from ecoscope.platform.tasks.results import (
 )
 from ecoscope.platform.tasks.results import (
     create_single_value_widget_single_view as create_single_value_widget_single_view,
-)
-from ecoscope.platform.tasks.results import (
-    create_text_widget_single_view as create_text_widget_single_view,
 )
 from ecoscope.platform.tasks.results import draw_map as draw_map
 from ecoscope.platform.tasks.results import draw_table as draw_table
@@ -272,11 +270,14 @@ def main(params: dict[str, Any], validate_params_schema: bool = True):
             time_range=time_range,
             patrol_types=[],
             event_types=[],
+            status=["done", "active", "overdue", "cancelled"],
+            event_states=[],
             sub_page_size=100,
             raise_on_empty=False,
             include_patrol_details=True,
             truncate_to_time_range=True,
             include_null_geometry=False,
+            patrols_overlap_daterange=True,
             **(params.get("patrol_and_events_params") or {}),
         )
         .call()
@@ -527,26 +528,6 @@ def main(params: dict[str, Any], validate_params_schema: bool = True):
         .call()
     )
 
-    patrol_id_stat_widget = (
-        task(create_text_widget_single_view)
-        .validate()
-        .set_task_instance_id("patrol_id_stat_widget")
-        .handle_errors()
-        .with_tracing()
-        .skipif(
-            conditions=[
-                never,
-            ],
-            unpack_depth=1,
-        )
-        .partial(
-            title="ID da patrulha",
-            data=patrol_id_stat,
-            **(params.get("patrol_id_stat_widget") or {}),
-        )
-        .call()
-    )
-
     patrol_type_stat = (
         task(extract_first_value_as_string)
         .validate()
@@ -564,26 +545,6 @@ def main(params: dict[str, Any], validate_params_schema: bool = True):
             df=trajs,
             column_name="extra__patrol_type__display",
             **(params.get("patrol_type_stat") or {}),
-        )
-        .call()
-    )
-
-    patrol_type_stat_widget = (
-        task(create_text_widget_single_view)
-        .validate()
-        .set_task_instance_id("patrol_type_stat_widget")
-        .handle_errors()
-        .with_tracing()
-        .skipif(
-            conditions=[
-                never,
-            ],
-            unpack_depth=1,
-        )
-        .partial(
-            title="Tipo de patrulha",
-            data=patrol_type_stat,
-            **(params.get("patrol_type_stat_widget") or {}),
         )
         .call()
     )
@@ -609,42 +570,48 @@ def main(params: dict[str, Any], validate_params_schema: bool = True):
         .call()
     )
 
-    patrol_leader_stat_widget = (
-        task(create_text_widget_single_view)
+    start_time_str = (
+        task(extract_formatted_datetime)
         .validate()
-        .set_task_instance_id("patrol_leader_stat_widget")
+        .set_task_instance_id("start_time_str")
         .handle_errors()
         .with_tracing()
         .skipif(
             conditions=[
-                never,
+                any_is_empty_df,
+                any_dependency_skipped,
             ],
             unpack_depth=1,
         )
         .partial(
-            title="Líder da patrulha",
-            data=patrol_leader_stat,
-            **(params.get("patrol_leader_stat_widget") or {}),
+            df=trajs,
+            column_name="extra__patrol_start_time",
+            aggregator="min",
+            time_format="%d/%m/%Y %H:%M",
+            **(params.get("start_time_str") or {}),
         )
         .call()
     )
 
-    patrol_participants_widget = (
-        task(create_text_widget_single_view)
+    end_time_str = (
+        task(extract_formatted_datetime)
         .validate()
-        .set_task_instance_id("patrol_participants_widget")
+        .set_task_instance_id("end_time_str")
         .handle_errors()
         .with_tracing()
         .skipif(
             conditions=[
-                never,
+                any_is_empty_df,
+                any_dependency_skipped,
             ],
             unpack_depth=1,
         )
         .partial(
-            title="Participantes",
-            data=patrol_leader_stat,
-            **(params.get("patrol_participants_widget") or {}),
+            df=trajs,
+            column_name="extra__patrol_end_time",
+            aggregator="max",
+            time_format="%d/%m/%Y %H:%M",
+            **(params.get("end_time_str") or {}),
         )
         .call()
     )
@@ -690,31 +657,10 @@ def main(params: dict[str, Any], validate_params_schema: bool = True):
         .call()
     )
 
-    total_distance_widget = (
-        task(create_single_value_widget_single_view)
+    total_hours = (
+        task(dataframe_column_sum)
         .validate()
-        .set_task_instance_id("total_distance_widget")
-        .handle_errors()
-        .with_tracing()
-        .skipif(
-            conditions=[
-                never,
-            ],
-            unpack_depth=1,
-        )
-        .partial(
-            title="Distância percorrida (km)",
-            decimal_places=2,
-            data=total_distance_km,
-            **(params.get("total_distance_widget") or {}),
-        )
-        .call()
-    )
-
-    start_time_str = (
-        task(extract_formatted_datetime)
-        .validate()
-        .set_task_instance_id("start_time_str")
+        .set_task_instance_id("total_hours")
         .handle_errors()
         .with_tracing()
         .skipif(
@@ -726,38 +672,16 @@ def main(params: dict[str, Any], validate_params_schema: bool = True):
         )
         .partial(
             df=trajs,
-            column_name="extra__patrol_start_time",
-            aggregator="min",
-            time_format="%d/%m/%Y %H:%M",
-            **(params.get("start_time_str") or {}),
+            column_name="timespan_seconds",
+            **(params.get("total_hours") or {}),
         )
         .call()
     )
 
-    start_time_widget = (
-        task(create_text_widget_single_view)
+    total_hours_h = (
+        task(with_unit)
         .validate()
-        .set_task_instance_id("start_time_widget")
-        .handle_errors()
-        .with_tracing()
-        .skipif(
-            conditions=[
-                never,
-            ],
-            unpack_depth=1,
-        )
-        .partial(
-            title="Data e hora de início",
-            data=start_time_str,
-            **(params.get("start_time_widget") or {}),
-        )
-        .call()
-    )
-
-    end_time_str = (
-        task(extract_formatted_datetime)
-        .validate()
-        .set_task_instance_id("end_time_str")
+        .set_task_instance_id("total_hours_h")
         .handle_errors()
         .with_tracing()
         .skipif(
@@ -768,31 +692,10 @@ def main(params: dict[str, Any], validate_params_schema: bool = True):
             unpack_depth=1,
         )
         .partial(
-            df=trajs,
-            column_name="extra__patrol_end_time",
-            aggregator="max",
-            time_format="%d/%m/%Y %H:%M",
-            **(params.get("end_time_str") or {}),
-        )
-        .call()
-    )
-
-    end_time_widget = (
-        task(create_text_widget_single_view)
-        .validate()
-        .set_task_instance_id("end_time_widget")
-        .handle_errors()
-        .with_tracing()
-        .skipif(
-            conditions=[
-                never,
-            ],
-            unpack_depth=1,
-        )
-        .partial(
-            title="Data e hora do fim",
-            data=end_time_str,
-            **(params.get("end_time_widget") or {}),
+            original_unit="s",
+            new_unit="h",
+            value=total_hours,
+            **(params.get("total_hours_h") or {}),
         )
         .call()
     )
@@ -892,6 +795,70 @@ def main(params: dict[str, Any], validate_params_schema: bool = True):
         .call()
     )
 
+    patrol_colormap = (
+        task(apply_qualitative_color_map)
+        .validate()
+        .set_task_instance_id("patrol_colormap")
+        .handle_errors()
+        .with_tracing()
+        .skipif(
+            conditions=[
+                any_is_empty_df,
+                any_dependency_skipped,
+            ],
+            unpack_depth=1,
+        )
+        .partial(df=trajs, **(params.get("patrol_colormap") or {}))
+        .call()
+    )
+
+    selected_traj_cols = (
+        task(map_columns)
+        .validate()
+        .set_task_instance_id("selected_traj_cols")
+        .handle_errors()
+        .with_tracing()
+        .skipif(
+            conditions=[
+                any_is_empty_df,
+                any_dependency_skipped,
+            ],
+            unpack_depth=1,
+        )
+        .partial(
+            df=patrol_colormap,
+            retain_columns=[
+                "geometry",
+                "column_color",
+                "column_label",
+                "extra__patrol_serial_number",
+            ],
+            raise_if_not_found=False,
+            drop_columns=None,
+            rename_columns=None,
+            duplicate_strategy="suffix",
+            **(params.get("selected_traj_cols") or {}),
+        )
+        .call()
+    )
+
+    trajs_legend_title = (
+        task(set_string_var)
+        .validate()
+        .set_task_instance_id("trajs_legend_title")
+        .handle_errors()
+        .with_tracing()
+        .skipif(
+            conditions=[
+                any_is_empty_df,
+                any_dependency_skipped,
+            ],
+            unpack_depth=1,
+        )
+        .partial(**(params.get("trajs_legend_title") or {}))
+        .call()
+    )
+
     trajs_layer = (
         task(create_path_layer)
         .validate()
@@ -906,10 +873,13 @@ def main(params: dict[str, Any], validate_params_schema: bool = True):
             unpack_depth=1,
         )
         .partial(
-            geodataframe=trajs,
-            legend=None,
+            geodataframe=selected_traj_cols,
+            legend={
+                "title": trajs_legend_title,
+                "label_column": "column_label",
+                "color_column": "column_color",
+            },
             data_url=None,
-            layer_style={"get_color": [37, 99, 235, 255]},
             **(params.get("trajs_layer") or {}),
         )
         .call()
@@ -1005,9 +975,9 @@ def main(params: dict[str, Any], validate_params_schema: bool = True):
             left=events_with_type_display,
             right=event_details_lookup_cols,
             how="left",
-            on=None,
-            left_on="id",
-            right_on="id",
+            on="id",
+            left_on=None,
+            right_on=None,
             left_index=False,
             right_index=False,
             fillna_value=None,
@@ -1115,6 +1085,86 @@ def main(params: dict[str, Any], validate_params_schema: bool = True):
             },
             data_url=None,
             **(params.get("event_layer") or {}),
+        )
+        .call()
+    )
+
+    total_events = (
+        task(dataframe_count)
+        .validate()
+        .set_task_instance_id("total_events")
+        .handle_errors()
+        .with_tracing()
+        .skipif(
+            conditions=[
+                any_is_empty_df,
+                any_dependency_skipped,
+            ],
+            unpack_depth=1,
+        )
+        .partial(df=event_colormap, **(params.get("total_events") or {}))
+        .call()
+    )
+
+    total_events_widget = (
+        task(create_single_value_widget_single_view)
+        .validate()
+        .set_task_instance_id("total_events_widget")
+        .handle_errors()
+        .with_tracing()
+        .skipif(
+            conditions=[
+                never,
+            ],
+            unpack_depth=1,
+        )
+        .partial(
+            title="Número de eventos",
+            decimal_places=0,
+            data=total_events,
+            **(params.get("total_events_widget") or {}),
+        )
+        .call()
+    )
+
+    total_distance_widget = (
+        task(create_single_value_widget_single_view)
+        .validate()
+        .set_task_instance_id("total_distance_widget")
+        .handle_errors()
+        .with_tracing()
+        .skipif(
+            conditions=[
+                never,
+            ],
+            unpack_depth=1,
+        )
+        .partial(
+            title="Distância percorrida (km)",
+            decimal_places=2,
+            data=total_distance_km,
+            **(params.get("total_distance_widget") or {}),
+        )
+        .call()
+    )
+
+    total_hours_widget = (
+        task(create_single_value_widget_single_view)
+        .validate()
+        .set_task_instance_id("total_hours_widget")
+        .handle_errors()
+        .with_tracing()
+        .skipif(
+            conditions=[
+                never,
+            ],
+            unpack_depth=1,
+        )
+        .partial(
+            title="Tempo total (h)",
+            decimal_places=2,
+            data=total_hours_h,
+            **(params.get("total_hours_widget") or {}),
         )
         .call()
     )
@@ -1341,127 +1391,6 @@ def main(params: dict[str, Any], validate_params_schema: bool = True):
         .call()
     )
 
-    photo_records_renamed = (
-        task(map_columns)
-        .validate()
-        .set_task_instance_id("photo_records_renamed")
-        .handle_errors()
-        .with_tracing()
-        .skipif(
-            conditions=[
-                any_is_empty_df,
-                any_dependency_skipped,
-            ],
-            unpack_depth=1,
-        )
-        .partial(
-            df=event_colormap,
-            rename_columns={
-                "serial_number": "ID do evento",
-                "time": "Data e hora",
-                "lat/lon": "Coordenadas geográficas",
-                "event_type_display": "Tipo de evento",
-            },
-            raise_if_not_found=False,
-            retain_columns=None,
-            drop_columns=None,
-            duplicate_strategy="suffix",
-            **(params.get("photo_records_renamed") or {}),
-        )
-        .call()
-    )
-
-    photo_records_cols = (
-        task(select_columns)
-        .validate()
-        .set_task_instance_id("photo_records_cols")
-        .handle_errors()
-        .with_tracing()
-        .skipif(
-            conditions=[
-                any_is_empty_df,
-                any_dependency_skipped,
-            ],
-            unpack_depth=1,
-        )
-        .partial(
-            df=photo_records_renamed,
-            raise_on_missing=False,
-            columns=[
-                "ID do evento",
-                "Data e hora",
-                "Coordenadas geográficas",
-                "Tipo de evento",
-            ],
-            **(params.get("photo_records_cols") or {}),
-        )
-        .call()
-    )
-
-    photo_records_table = (
-        task(draw_table)
-        .validate()
-        .set_task_instance_id("photo_records_table")
-        .handle_errors()
-        .with_tracing()
-        .skipif(
-            conditions=[
-                any_is_empty_df,
-                any_dependency_skipped,
-            ],
-            unpack_depth=1,
-        )
-        .partial(
-            dataframe=photo_records_cols,
-            columns=None,
-            table_config=None,
-            **(params.get("photo_records_table") or {}),
-        )
-        .call()
-    )
-
-    photo_records_table_html = (
-        task(persist_text)
-        .validate()
-        .set_task_instance_id("photo_records_table_html")
-        .handle_errors()
-        .with_tracing()
-        .skipif(
-            conditions=[
-                any_is_empty_df,
-                any_dependency_skipped,
-            ],
-            unpack_depth=1,
-        )
-        .partial(
-            text=photo_records_table,
-            root_path=os.environ["ECOSCOPE_WORKFLOWS_RESULTS"],
-            filename_suffix="photo_records_table",
-            **(params.get("photo_records_table_html") or {}),
-        )
-        .call()
-    )
-
-    photo_records_widget = (
-        task(create_plot_widget_single_view)
-        .validate()
-        .set_task_instance_id("photo_records_widget")
-        .handle_errors()
-        .with_tracing()
-        .skipif(
-            conditions=[
-                never,
-            ],
-            unpack_depth=1,
-        )
-        .partial(
-            title="Registros Fotográficos",
-            data=photo_records_table_html,
-            **(params.get("photo_records_widget") or {}),
-        )
-        .call()
-    )
-
     download_attachments = (
         task(download_event_attachments)
         .validate()
@@ -1604,16 +1533,11 @@ def main(params: dict[str, Any], validate_params_schema: bool = True):
         .partial(
             details=workflow_details,
             widgets=[
-                patrol_id_stat_widget,
-                patrol_type_stat_widget,
-                patrol_leader_stat_widget,
-                patrol_participants_widget,
+                total_events_widget,
                 total_distance_widget,
-                start_time_widget,
-                end_time_widget,
+                total_hours_widget,
                 patrol_map_widget,
                 events_table_widget,
-                photo_records_widget,
             ],
             groupers=groupers,
             time_range=time_range,

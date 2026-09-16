@@ -9,7 +9,7 @@ iguacu-individual-patrol:
       data_source:
         name: parnaiguacu
     time_range:
-      since: "2025-09-01T00:00:00.000Z"
+      since: "2026-08-01T00:00:00.000Z"
       until: "2026-09-01T00:00:00.000Z"
     patrol_id:
       var: "262"
@@ -21,6 +21,11 @@ iguacu-individual-patrol:
         - url: >-
             https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}
           opacity: 0.5
+    patrol_colormap:
+      input_column_name: extra__patrol_type__display
+      colormap: Set2
+    trajs_legend_title:
+      var: Tipo de patrulha
     event_colormap:
       input_column_name: event_type_display
       colormap: Set2

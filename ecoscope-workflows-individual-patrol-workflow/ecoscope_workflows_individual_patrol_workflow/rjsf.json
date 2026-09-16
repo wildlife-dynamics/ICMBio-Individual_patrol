@@ -275,91 +275,9 @@
         "var"
       ],
       "type": "object",
-      "title": "Patrol ID"
+      "title": "Patrol"
     },
-    "Patrol Lookup": {
-      "type": "object",
-      "description": "Fetch every patrol in the time range, then keep only the one matching Patrol ID.",
-      "ecoscope:task_group": true,
-      "properties": {
-        "patrol_and_events_params": {
-          "additionalProperties": false,
-          "properties": {
-            "status": {
-              "default": [
-                "done"
-              ],
-              "items": {
-                "type": "string",
-                "oneOf": [
-                  {
-                    "const": "active",
-                    "title": "Active"
-                  },
-                  {
-                    "const": "overdue",
-                    "title": "Overdue"
-                  },
-                  {
-                    "const": "done",
-                    "title": "Done"
-                  },
-                  {
-                    "const": "cancelled",
-                    "title": "Cancelled"
-                  }
-                ]
-              },
-              "title": "Patrol Status",
-              "type": "array",
-              "description": "Choose to analyze patrols with a certain status. If left empty, patrols of all status will be analyzed",
-              "uniqueItems": true,
-              "ecoscope:advanced": true
-            },
-            "event_states": {
-              "default": null,
-              "items": {
-                "type": "string",
-                "oneOf": [
-                  {
-                    "const": "new",
-                    "title": "New"
-                  },
-                  {
-                    "const": "active",
-                    "title": "Active"
-                  },
-                  {
-                    "const": "resolved",
-                    "title": "Resolved"
-                  },
-                  {
-                    "const": "review",
-                    "title": "Review"
-                  }
-                ]
-              },
-              "title": "Event State",
-              "type": "array",
-              "description": "Choose to analyze events with a certain state. If left empty, events of all states will be analyzed",
-              "uniqueItems": true,
-              "ecoscope:advanced": true
-            },
-            "patrols_overlap_daterange": {
-              "default": true,
-              "title": "Patrols Overlap Daterange",
-              "type": "boolean",
-              "description": "Whether or not to include patrols that start or end outside of the time range",
-              "ecoscope:advanced": true
-            }
-          },
-          "required": [],
-          "type": "object",
-          "title": ""
-        }
-      }
-    },
-    "Patrol Track": {
+    "Patrol Trajectory": {
       "type": "object",
       "description": "",
       "ecoscope:task_group": true,
@@ -406,7 +324,9 @@
                   "$ref": "#/$defs/EarthRangerSource"
                 }
               ],
-              "default": null,
+              "default": {
+                "query": null
+              },
               "title": "Source"
             },
             "group_by": {
@@ -431,7 +351,8 @@
               "title": "Legend Title",
               "type": "string",
               "description": "Label shown in the map legend e.g. 'Park Boundary'.",
-              "ecoscope:advanced": true
+              "ecoscope:advanced": true,
+              "ui:placeholder": "e.g. Park Boundary"
             }
           },
           "required": [],
@@ -450,13 +371,13 @@
           "properties": {
             "file_path": {
               "default": "",
-              "title": "File Path",
+              "title": "Local File Path",
               "type": "string",
-              "description": "Path to the geospatial file. Supported formats: GeoJSON (.geojson), GeoPackage (.gpkg), and GeoParquet (.parquet / .geoparquet).",
+              "description": "GeoJSON (.geojson), GeoPackage (.gpkg), or GeoParquet (.parquet/.geoparquet).",
               "ecoscope:advanced": true
             },
             "layer": {
-              "default": null,
+              "default": "",
               "title": "Layer",
               "type": "string",
               "description": "Layer name within a GeoPackage file. Only required when the file contains multiple layers.",
@@ -477,7 +398,7 @@
               "ecoscope:advanced": true
             },
             "style": {
-              "default": null,
+              "default": [],
               "items": {
                 "$ref": "#/$defs/LayerStyle"
               },
@@ -494,16 +415,217 @@
         }
       }
     },
-    "Patrol Track Style": {
+    "Patrol Style": {
       "type": "object",
-      "description": "A single fixed color for the one patrol track \u2014 no legend needed (PRD only asks for an event-type legend).",
+      "description": "Choose how the patrol track is colored on the map.",
       "ecoscope:task_group": true,
       "properties": {
+        "patrol_colormap": {
+          "additionalProperties": false,
+          "properties": {
+            "input_column_name": {
+              "title": "Groupby",
+              "type": "string",
+              "description": "Color the patrol track by the selected attribute.",
+              "default": "extra__patrol_type__display",
+              "ecoscope:advanced": false,
+              "oneOf": [
+                {
+                  "const": "extra__patrol_type__display",
+                  "title": "Patrol Type"
+                },
+                {
+                  "const": "extra__patrol_serial_number",
+                  "title": "Patrol ID"
+                }
+              ]
+            },
+            "colormap": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/QualitativeColormap"
+                }
+              ],
+              "default": "Set2",
+              "title": "Palette",
+              "description": "Choose a color palette (only one color is actually used, since there's a single patrol) \u2014 or set Custom Colors below to pick an exact color instead.",
+              "ecoscope:advanced": false
+            },
+            "custom_colors": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Custom Colors",
+              "type": "array",
+              "description": "Leave empty to use the palette above. Provide one RGBA color (e.g. [37, 99, 235, 255]) to set the track's exact color instead.",
+              "ecoscope:advanced": false
+            }
+          },
+          "required": [
+            "input_column_name"
+          ],
+          "type": "object",
+          "title": ""
+        },
+        "trajs_legend_title": {
+          "additionalProperties": false,
+          "properties": {
+            "var": {
+              "title": "Title",
+              "type": "string",
+              "description": "Legend title for the patrol track.",
+              "default": "Tipo de patrulha",
+              "ecoscope:advanced": false
+            }
+          },
+          "required": [
+            "var"
+          ],
+          "type": "object",
+          "title": ""
+        },
         "trajs_layer": {
           "additionalProperties": false,
           "properties": {
+            "layer_style": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/PathLayerStyle"
+                }
+              ],
+              "default": {
+                "auto_highlight": false,
+                "opacity": 1,
+                "pickable": true,
+                "get_path": "geometry.coordinates",
+                "get_color": null,
+                "get_width": 3,
+                "width_scale": 1,
+                "width_min_pixels": 0,
+                "width_max_pixels": null,
+                "width_units": "pixels",
+                "cap_rounded": true,
+                "joint_rounded": false,
+                "billboard": false
+              },
+              "title": "Layer Style",
+              "description": "",
+              "ecoscope:advanced": true,
+              "properties": {
+                "auto_highlight": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Auto Highlight",
+                  "description": "Enable automatic highlighting when hovering over the patrol track.",
+                  "ecoscope:advanced": true
+                },
+                "opacity": {
+                  "type": "number",
+                  "default": 1.0,
+                  "title": "Opacity",
+                  "description": "Transparency of the patrol track, from 0 (invisible) to 1 (fully opaque).",
+                  "ecoscope:advanced": true
+                },
+                "pickable": {
+                  "type": "boolean",
+                  "default": true,
+                  "title": "Pickable",
+                  "description": "Allow the patrol track to be interactive (hoverable and clickable).",
+                  "ecoscope:advanced": true
+                },
+                "get_path": {
+                  "type": "string",
+                  "default": "geometry.coordinates",
+                  "enum": [
+                    "geometry.coordinates"
+                  ],
+                  "title": "Path",
+                  "description": "Column or expression used to determine the path coordinates.",
+                  "ecoscope:advanced": true
+                },
+                "get_color": {
+                  "type": "string",
+                  "default": "column_color",
+                  "enum": [
+                    "column_color"
+                  ],
+                  "title": "Color",
+                  "description": "Column used for track color. Defaults to the colormap output.",
+                  "ecoscope:advanced": true
+                },
+                "get_width": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "default": 4,
+                      "title": "Line Width Size"
+                    }
+                  ],
+                  "default": 4,
+                  "title": "Line Width",
+                  "description": "Width of the patrol track line.",
+                  "ecoscope:advanced": true
+                },
+                "width_scale": {
+                  "type": "number",
+                  "default": 1,
+                  "title": "Width Scale",
+                  "description": "Global multiplier applied to the track width.",
+                  "ecoscope:advanced": true
+                },
+                "width_min_pixels": {
+                  "type": "number",
+                  "default": 0,
+                  "title": "Width Min Pixels",
+                  "description": "Minimum track width in pixels regardless of zoom level.",
+                  "ecoscope:advanced": true
+                },
+                "width_max_pixels": {
+                  "type": "number",
+                  "default": 9999,
+                  "title": "Width Max Pixels",
+                  "description": "Maximum track width in pixels regardless of zoom level.",
+                  "ecoscope:advanced": true
+                },
+                "width_units": {
+                  "type": "string",
+                  "default": "pixels",
+                  "enum": [
+                    "meters",
+                    "pixels"
+                  ],
+                  "title": "Width Units",
+                  "description": "Units for the track width \u2014 pixels (screen-space) or meters (world-space).",
+                  "ecoscope:advanced": true
+                },
+                "cap_rounded": {
+                  "type": "boolean",
+                  "default": true,
+                  "title": "Rounded Caps",
+                  "description": "Draw rounded ends on each track segment.",
+                  "ecoscope:advanced": true
+                },
+                "joint_rounded": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Joint Rounded",
+                  "description": "Draw rounded joins between path segments.",
+                  "ecoscope:advanced": true
+                },
+                "billboard": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Billboard",
+                  "description": "Render the path always facing the camera regardless of map tilt.",
+                  "ecoscope:advanced": true
+                }
+              }
+            },
             "tooltip_columns": {
-              "default": null,
+              "default": [
+                "extra__patrol_serial_number",
+                "column_label"
+              ],
               "items": {
                 "type": "string"
               },
@@ -669,18 +791,190 @@
                 "billboard": false
               },
               "title": "Layer Style",
-              "description": "Style arguments for the layer.",
+              "description": "",
               "ecoscope:advanced": true,
               "properties": {
+                "auto_highlight": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Auto Highlight",
+                  "description": "Enable automatic highlighting when hovering over a marker.",
+                  "ecoscope:advanced": true
+                },
+                "opacity": {
+                  "type": "number",
+                  "default": 1.0,
+                  "title": "Opacity",
+                  "description": "Transparency of the markers, from 0 (invisible) to 1 (fully opaque).",
+                  "ecoscope:advanced": true
+                },
+                "pickable": {
+                  "type": "boolean",
+                  "default": true,
+                  "title": "Pickable",
+                  "description": "Allow markers to be interactive (hoverable and clickable).",
+                  "ecoscope:advanced": true
+                },
+                "get_position": {
+                  "type": "string",
+                  "default": "geometry.coordinates",
+                  "enum": [
+                    "geometry.coordinates"
+                  ],
+                  "title": "Position",
+                  "description": "Column or expression used to determine the marker position on the map.",
+                  "ecoscope:advanced": true
+                },
                 "get_fill_color": {
+                  "type": "string",
+                  "default": "column_color",
                   "enum": [
                     "column_color"
-                  ]
+                  ],
+                  "title": "Fill Color",
+                  "description": "Column used for marker fill color. Defaults to the colormap output.",
+                  "ecoscope:advanced": true
                 },
                 "get_line_color": {
+                  "type": "string",
+                  "default": "column_color",
                   "enum": [
                     "column_color"
-                  ]
+                  ],
+                  "title": "Outline Color",
+                  "description": "Column used for marker outline color. Defaults to the colormap output.",
+                  "ecoscope:advanced": true
+                },
+                "get_radius": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "default": 6,
+                      "title": "Radius Size"
+                    }
+                  ],
+                  "default": 6,
+                  "title": "Point Radius",
+                  "description": "Size of each event marker.",
+                  "ecoscope:advanced": true
+                },
+                "get_line_width": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "default": 1,
+                      "title": "Line Width Size"
+                    }
+                  ],
+                  "default": 1,
+                  "title": "Outline Width",
+                  "description": "Width of the marker outline when Stroked is enabled.",
+                  "ecoscope:advanced": true
+                },
+                "get_elevation": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "default": 0,
+                      "title": "Elevation Height"
+                    }
+                  ],
+                  "default": 0,
+                  "title": "Elevation",
+                  "description": "Height of each marker for 3D visualisation.",
+                  "ecoscope:advanced": true
+                },
+                "radius_units": {
+                  "type": "string",
+                  "default": "pixels",
+                  "enum": [
+                    "meters",
+                    "pixels"
+                  ],
+                  "title": "Radius Units",
+                  "description": "Units for the marker radius \u2014 pixels (screen-space) or meters (world-space).",
+                  "ecoscope:advanced": true
+                },
+                "radius_scale": {
+                  "type": "number",
+                  "default": 1,
+                  "title": "Radius Scale",
+                  "description": "Global multiplier applied to all marker radii.",
+                  "ecoscope:advanced": true
+                },
+                "radius_min_pixels": {
+                  "type": "number",
+                  "default": 0,
+                  "title": "Radius Min Pixels",
+                  "description": "Minimum radius size in pixels regardless of zoom level.",
+                  "ecoscope:advanced": true
+                },
+                "radius_max_pixels": {
+                  "type": "number",
+                  "default": 9999,
+                  "title": "Radius Max Pixels",
+                  "description": "Maximum radius size in pixels regardless of zoom level.",
+                  "ecoscope:advanced": true
+                },
+                "line_width_units": {
+                  "type": "string",
+                  "default": "pixels",
+                  "enum": [
+                    "meters",
+                    "pixels"
+                  ],
+                  "title": "Line Width Units",
+                  "description": "Units for the outline width \u2014 pixels (screen-space) or meters (world-space).",
+                  "ecoscope:advanced": true
+                },
+                "line_width_scale": {
+                  "type": "number",
+                  "default": 1,
+                  "title": "Line Width Scale",
+                  "description": "Global multiplier applied to all outline widths.",
+                  "ecoscope:advanced": true
+                },
+                "line_width_min_pixels": {
+                  "type": "number",
+                  "default": 0,
+                  "title": "Line Width Min Pixels",
+                  "description": "Minimum outline width in pixels regardless of zoom level.",
+                  "ecoscope:advanced": true
+                },
+                "line_width_max_pixels": {
+                  "type": "number",
+                  "default": 9999,
+                  "title": "Line Width Max Pixels",
+                  "description": "Maximum outline width in pixels regardless of zoom level.",
+                  "ecoscope:advanced": true
+                },
+                "stroked": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Stroked",
+                  "description": "Draw a border outline around each marker.",
+                  "ecoscope:advanced": true
+                },
+                "filled": {
+                  "type": "boolean",
+                  "default": true,
+                  "title": "Filled",
+                  "description": "Fill the interior of each marker with color.",
+                  "ecoscope:advanced": true
+                },
+                "elevation_scale": {
+                  "type": "number",
+                  "default": 1,
+                  "title": "Elevation Scale",
+                  "description": "Global multiplier applied to the elevation value for 3D visualisation.",
+                  "ecoscope:advanced": true
+                },
+                "billboard": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Billboard",
+                  "description": "Always face the marker toward the camera regardless of map tilt.",
+                  "ecoscope:advanced": true
                 }
               }
             },
@@ -1075,6 +1369,104 @@
       "title": "QualitativeColormap",
       "type": "string"
     },
+    "PathLayerStyle": {
+      "description": "Path Layer style kwargs\nSee https://deck.gl/docs/api-reference/layers/path-layer for more info",
+      "properties": {
+        "auto_highlight": {
+          "default": false,
+          "ecoscope:advanced": true,
+          "title": "Auto Highlight",
+          "type": "boolean"
+        },
+        "opacity": {
+          "default": 1,
+          "ecoscope:advanced": true,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Opacity",
+          "type": "number"
+        },
+        "pickable": {
+          "default": true,
+          "ecoscope:advanced": true,
+          "title": "Pickable",
+          "type": "boolean"
+        },
+        "get_path": {
+          "default": "geometry.coordinates",
+          "ecoscope:advanced": true,
+          "title": "Get Path",
+          "type": "string"
+        },
+        "get_color": {
+          "default": null,
+          "ecoscope:advanced": true,
+          "title": "Get Color",
+          "type": "string"
+        },
+        "get_width": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "default": 3,
+          "ecoscope:advanced": true,
+          "title": "Get Width"
+        },
+        "width_scale": {
+          "default": 1,
+          "ecoscope:advanced": true,
+          "title": "Width Scale",
+          "type": "number"
+        },
+        "width_min_pixels": {
+          "default": 0,
+          "ecoscope:advanced": true,
+          "title": "Width Min Pixels",
+          "type": "number"
+        },
+        "width_max_pixels": {
+          "default": null,
+          "ecoscope:advanced": true,
+          "title": "Width Max Pixels",
+          "type": "number"
+        },
+        "width_units": {
+          "default": "pixels",
+          "ecoscope:advanced": true,
+          "enum": [
+            "meters",
+            "pixels"
+          ],
+          "title": "Width Units",
+          "type": "string"
+        },
+        "cap_rounded": {
+          "default": true,
+          "ecoscope:advanced": true,
+          "title": "Cap Rounded",
+          "type": "boolean"
+        },
+        "joint_rounded": {
+          "default": false,
+          "ecoscope:advanced": true,
+          "title": "Joint Rounded",
+          "type": "boolean"
+        },
+        "billboard": {
+          "default": false,
+          "ecoscope:advanced": true,
+          "title": "Billboard",
+          "type": "boolean"
+        }
+      },
+      "title": "PathLayerStyle",
+      "type": "object"
+    },
     "ScatterplotLayerStyle": {
       "description": "Scatterplot Layer style kwargs\nSee https://deck.gl/docs/api-reference/layers/scatterplot-layer for more info",
       "properties": {
@@ -1254,15 +1646,6 @@
         "timezone"
       ]
     },
-    "Patrol Lookup": {
-      "patrol_and_events_params": {
-        "ui:order": [
-          "status",
-          "event_states",
-          "patrols_overlap_daterange"
-        ]
-      }
-    },
     "Spatial Features": {
       "spatial_features": {
         "ui:order": [
@@ -1308,6 +1691,34 @@
           "legend_title",
           "style"
         ]
+      }
+    },
+    "Patrol Style": {
+      "ui:order": [
+        "patrol_colormap",
+        "trajs_legend_title",
+        "trajs_layer"
+      ],
+      "patrol_colormap": {
+        "ui:order": [
+          "input_column_name",
+          "colormap",
+          "custom_colors"
+        ]
+      },
+      "trajs_layer": {
+        "ui:order": [
+          "layer_style",
+          "tooltip_columns"
+        ],
+        "layer_style": {
+          "get_color": {
+            "ui:widget": "hidden"
+          },
+          "get_path": {
+            "ui:widget": "hidden"
+          }
+        }
       }
     },
     "Event Style": {
@@ -1360,11 +1771,10 @@
       "time_range",
       "base_maps",
       "patrol_id",
-      "Patrol Lookup",
-      "Patrol Track",
+      "Patrol Trajectory",
       "Spatial Features",
       "Local Spatial Features",
-      "Patrol Track Style",
+      "Patrol Style",
       "Event Style",
       "download_attachments",
       "Patrol Report"
