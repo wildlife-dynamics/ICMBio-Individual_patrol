@@ -54,6 +54,18 @@ event_layer:
     get_fill_color: column_color
     get_line_color: column_color
 
+# Testing the Show Labels feature against the real, hidden (is_visible=False)
+# 28-polygon Sector Ecoscope grid, via include_hidden — same test config
+# ICMBio-patrol_analysis uses for this same feature.
+spatial_features:
+  source:
+    query:
+      feature_type: "Sector Ecoscope"
+      include_hidden: true
+  show_labels: true
+  label_style:
+    - color: "#1d3557"
+
 download_attachments:
   skip_download: true
 
